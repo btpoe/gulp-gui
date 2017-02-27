@@ -28,8 +28,7 @@ class App extends Component {
         const schema = this.props.schema[activePanel];
         const formData = this.props.formData[activePanel];
 
-        return createElement('fieldset', { className: 'row' },
-            createElement('legend', { className: 'col' }, 'GulpKit'),
+        return createElement('div', { className: 'row' },
             createElement(Nav, { setActivePanel: this.setActivePanel, activePanel }),
             createElement(SettingsPanel, { schema, formData, activePanel })
         );

@@ -1,4 +1,4 @@
-module.exports = {
+module.exports = formData => ({
     title: 'Project',
     type: 'object',
     required: ['title'],
@@ -13,4 +13,4 @@ module.exports = {
             items: { type: 'string' },
         },
     }
-};
+});

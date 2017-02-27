@@ -30,3 +30,5 @@ module.exports = function(state = initialState, action) {
             return state;
     }
 };
+
+module.exports.initialState = initialState;

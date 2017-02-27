@@ -1,6 +1,6 @@
 const endpoints = require('./shared/endpoints');
 
-module.exports = {
+module.exports = formData => ({
     title: 'Styles',
     type: 'object',
     properties: {
@@ -19,4 +19,4 @@ module.exports = {
         },
         endpoints,
     },
-};
+});

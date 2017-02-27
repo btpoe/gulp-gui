@@ -1,6 +1,6 @@
 const endpoints = require('./shared/endpoints');
 
-module.exports = {
+module.exports = formData => ({
     title: 'Images',
     type: 'object',
     properties: {
@@ -8,4 +8,4 @@ module.exports = {
         dest: { title: 'Destination Directory', type: 'string' },
     },
     endpoints,
-};
+});

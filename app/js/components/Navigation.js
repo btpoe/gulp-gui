@@ -12,7 +12,7 @@ module.exports = class extends Component {
             )
         );
 
-        return createElement('nav', { className: 'col-sm-4 col-md-3'},
+        return createElement('nav', { className: 'col-sm-4 navigation'},
             createElement('ul', { className: 'nav nav-pills nav-stacked' },
                 navLinks
             )

@@ -1,3 +1,38 @@
+:root {
+    --headerHeight: 3.5rem;
+    --padding: 15px;
+    --navWidth: 20rem;
+    --offsetFromHeader: calc(var(--headerHeight) + var(--padding));
+
+    --headerColor: #333;
+}
+
 #AppRoot {
-    padding: 20px;
+    padding: var(--offsetFromHeader) var(--padding) var(--padding) var(--navWidth);
+}
+
+header {
+    background: #222;
+    color: #fff;
+    height: var(--headerHeight);
+    left: 0;
+    line-height: var(--headerHeight);
+    padding: 0 calc(var(--padding) * 2);
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 1;
+}
+
+.navigation {
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    top: var(--offsetFromHeader);
+    width: var(--navWidth);
+    z-index: 1;
+}
+
+.config {
+    width: calc(100% - var(--navWidth));
 }

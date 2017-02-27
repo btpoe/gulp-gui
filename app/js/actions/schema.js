@@ -1,14 +1,12 @@
-const INCREMENT_COUNTER = module.exports.INCREMENT_COUNTER = 'INCREMENT_COUNTER';
-const DECREMENT_COUNTER = module.exports.DECREMENT_COUNTER = 'DECREMENT_COUNTER';
+const UPDATE = 'UPDATE_SCHEMA';
 
-module.exports.increment = function increment() {
+function update() {
     return {
-        type: INCREMENT_COUNTER
+        type: UPDATE,
     };
-};
+}
 
-module.exports.decrement = function decrement() {
-    return {
-        type: DECREMENT_COUNTER
-    };
+module.exports = {
+    UPDATE,
+    update
 };

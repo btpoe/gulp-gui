@@ -1,6 +1,13 @@
 const endpoints = require('./shared/endpoints');
 
-module.exports = {
+const transpilerSettings = {
+    Babel: require('../javascript/plugins/bable'),
+    Buble: require('../javascript/plugins/buble'),
+    Typescript: require('../javascript/plugins/typescript'),
+    Off: {},
+};
+
+module.exports = formData => ({
     title: 'Javascript',
     type: 'object',
     properties: {
@@ -25,6 +32,7 @@ module.exports = {
                 'Off',
             ],
         },
-        endpoints
+        transpilerSettings: transpilerSettings[formData.transpiler],
+        endpoints,
     },
-};
+});

@@ -1,7 +1,6 @@
-const UPDATE = 'UPDATE';
+const UPDATE = 'UPDATE_FORM_DATA';
 
 function update(key, data) {
-    console.log(key, data);
     return {
         type: UPDATE, key, data
     };
