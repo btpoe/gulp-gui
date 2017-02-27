@@ -1,0 +1,67 @@
+<script type="application/javascript">
+    <% if (data.engine === 'Rollup') { %>
+    const rollup = require('rollup-stream');
+    const commonjs = require('rollup-plugin-commonjs');
+    const nodeResolve = require('rollup-plugin-node-resolve');
+    <% if (data.transpiler === 'Buble') { %>
+    const transpiler = require('rollup-plugin-buble');
+    <% } %>
+    <% } else if (data.engine === 'Browserify') { %>
+    const browserify = require('browserify');
+    const browserifyInc = require('browserify-incremental');
+    <% if (data.transpiler === 'Babel') { %>
+    const transpiler = require('babelify');
+    <% } %>
+    <% } %>
+    const source = require('vinyl-source-stream');
+    const buffer = require('vinyl-buffer');
+    const sourcemaps = require('gulp-sourcemaps');
+    const createTask = require('../utils/create-task');
+    const config = require('../config').javascript;
+
+    <% if (data.engine === 'Rollup') { %>
+    const endpointConfigs = {};
+    <% } %>
+
+    module.exports = createTask({
+        taskName: 'scripts',
+        buildProcess(gulpSrc, endpoint) {
+            const fileName = endpoint.src;
+
+            <% if (data.engine === 'Rollup') { %>
+            if (!endpointConfigs[endpoint.src]) {
+                endpointConfigs[endpoint.src] = {
+                    entry: endpoint.src,
+                    sourceMap: true,
+                    plugins: [
+                        nodeResolve({
+                            extensions: ['.js', '.jsx'],
+                        }),
+                        commonjs(),
+                        transpiler(),
+                    ],
+                };
+            }
+
+            return rollup(endpointConfigs[endpoint.src])
+                .on('bundle', bundle => { endpointConfigs[endpoint.src].cache = bundle })
+            <% } else if (data.engine === 'Browserify') { %>
+            const bundle = browserify(browserifyInc.args);
+
+            bundle.add(endpoint.src);
+
+            bundle
+                .transform(transpiler, { presets: ["es2015", "react"] })
+                .transform('browserify-shim', { global: true });
+
+            browserifyInc(bundle, {cacheFile: './gulp_tasks/.cache/javascript/' + (fileName.replace(/[\/\\.\-_]+/g, '-')) + '.json'});
+
+            return bundler.bundle()
+            <% } %>
+                .pipe(source(endpoint.src.split('/').pop()))
+                .pipe(buffer())
+                .pipe(sourcemaps.init({loadMaps: true}))
+        },
+        minifier: require('gulp-uglify'),
+    });
+</script>

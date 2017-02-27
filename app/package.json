@@ -1,0 +1,26 @@
+{
+  "name": "Gulp",
+  "productName": "Gulp GUI",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Gulp GUI",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Brandon Poe <brandonpoe@me.co> (http://brandonpoe.com)",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^4.0.0",
+    "electron": "^1.4.1",
+    "electron-devtools-installer": "^2.1.0",
+    "electron-reload": "^1.0.3",
+    "lodash": "^4.17.2",
+    "react": "^15.3.2",
+    "react-addons-css-transition-group": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "react-jsonschema-form": "^0.43.0",
+    "react-redux": "^5.0.3",
+    "redux": "^3.6.0"
+  }
+}
