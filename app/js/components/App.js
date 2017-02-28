@@ -1,7 +1,7 @@
 const { Component, createElement } = require('react');
 const { connect } = require('react-redux');
 const Nav = require('./Navigation');
-const SettingsPanel = require('./tabs/SettingsPanel');
+const SettingsPanel = require('./SettingsPanel');
 
 function mapStateToProps(state) {
     return {

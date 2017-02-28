@@ -33,6 +33,8 @@ header {
     z-index: 1;
 }
 
-.config {
-    width: calc(100% - var(--navWidth));
+.field-enabled {
+    position: absolute;
+    right: var(--padding);
+    top: 0;
 }

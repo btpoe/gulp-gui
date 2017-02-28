@@ -1,5 +1,9 @@
+const enabled = require('./shared/enabled');
+
 module.exports = formData => ({
-    title: 'BrowserSync',
+    title: 'Browser Sync',
     type: 'object',
-    properties: {},
+    properties: {
+        enabled,
+    },
 });

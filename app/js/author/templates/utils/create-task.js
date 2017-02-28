@@ -1,24 +1,23 @@
-const Stream = require('stream').Stream;
 const path = require('path');
 const gulp = require('gulp');
+const gulpIf = require('gulp-if');
 const notify = require('gulp-notify');
 const rename = require('gulp-rename');
+const gutil = require('gulp-util');
 const logError = require('./log-error');
+const notificationFor = require('./notification-for');
+const resolve = require('./resolve');
 const config = require('../config');
-
-const noop = () => {};
 
 const DEFAULTS = {
     buildProcess: src => src,
     minifier: false,
-    minifySuffix: '-min',
 };
 
 function destFolder(dest) {
     if (path.extname(dest).length) {
         return path.parse(dest).dir;
     }
-
     return dest;
 }
 
@@ -30,14 +29,14 @@ function destFolder(dest) {
  * @returns {{task: function, watchTask: function}}
  */
 module.exports = (options) => {
-    const { taskName, buildProcess, minifier, minifySuffix } = Object.assign({}, DEFAULTS, options);
+    const { taskName, buildProcess, minifier } = Object.assign({}, DEFAULTS, options);
     // generate task name for the watcher
     const watchTaskName = `${taskName}:watch`;
 
     // get the settings specific to this task
     const taskConfig = config[taskName];
 
-    const taskLogic = (src) => {
+    const taskLogic = (endpoint) => {
         const options = {};
 
         if (taskConfig.baseSrcDir) {
@@ -45,30 +44,25 @@ module.exports = (options) => {
         }
 
         // create gulp source
-        let gulpSrc = gulp.src(src, options)
+        let gulpSrc = gulp.src(resolve('src', taskName, endpoint), options)
             // log errors for all tasks
             .on('error', logError);
 
         function notifyProcessComplete(notifySrc) {
             return notifySrc
-                .pipe(
-                    notify(
-                        config.projectSettings.notificationTemplate(taskName),
-                    ),
-                );
+                .pipe(notify(notificationFor(taskName)));
         }
 
         function onProcessComplete(finalGulpSrc) {
-            if (taskConfig.minify && minifier) {
-                finalGulpSrc = finalGulpSrc
-                    .pipe(rename({
-                        suffix: minifySuffix,
-                    }))
-                    .pipe(minifier(taskConfig.minifySettings || {}))
-                    .pipe(gulp.dest(destFolder(taskConfig.dest)));
+            function toDestination(dest) {
+                return this
+                    .pipe(rename(dest.rename || {}))
+                    .pipe(gulpIf(dest.minify === 'always' || dest.minify === 'production' && process.env.production, minifier()))
+                    .pipe(gulp.dest(dest.location));
             }
 
-            return notifyProcessComplete(finalGulpSrc);
+            const lastGulpPipe = endpoint.dest.map(toDestination.bind(finalGulpSrc)).pop();
+            return notifyProcessComplete(lastGulpPipe);
         }
 
         // pass gulpSrc into the build process
@@ -80,7 +74,7 @@ module.exports = (options) => {
             }
 
             // if we have a gulp source, execute the completion process with the new source
-            if (newGulpSrc instanceof Stream) {
+            if (gutil.isStream(newGulpSrc)) {
                 onProcessComplete(newGulpSrc);
             } else {
                 // otherwise, we'll just notify the user that the process has been completed
@@ -90,11 +84,8 @@ module.exports = (options) => {
 
         // if gulpStream is an instance of Stream, then we want to pipe the results of the build process to the
         // destination found in the task config
-        if (gulpSrc instanceof Stream) {
-            gulpSrc = gulpSrc
-                .pipe(gulp.dest(destFolder(taskConfig.dest)));
-
-            onProcessComplete(gulpSrc);
+        if (gutil.isStream(gulpSrc)) {
+            gulpSrc = onProcessComplete(gulpSrc);
         }
 
         return gulpSrc;
@@ -104,9 +95,9 @@ module.exports = (options) => {
     let t = { [taskName]: () => {} };
 
     if (typeof options.taskLogic === 'function') {
-        t = { [taskName]: (done = noop) => options.taskLogic(done) };
-    } else if (taskConfig.src) {
-        t = { [taskName]: () => taskLogic(taskConfig.src) };
+        t = { [taskName]: (done = gutil.noop) => options.taskLogic(done) };
+    } else if (taskConfig.endpoints) {
+        t = { [taskName]: () => gulp.parallel(taskConfig.endpoints.map(taskLogic)) };
     }
 
     if (t[taskName]) {

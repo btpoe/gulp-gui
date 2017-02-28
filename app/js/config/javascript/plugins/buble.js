@@ -8,8 +8,13 @@ module.exports = {
             items: {
                 type: 'string',
                 enum: [
+                    'node-resolve',
+                    'commonjs',
+                    'react',
+                ],
+                enumNames: [
                     'Node Resolve',
-                    'Commonjs',
+                    'CommonJS',
                     'React',
                 ],
             },

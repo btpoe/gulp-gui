@@ -1,0 +1,39 @@
+{
+  "images": {
+    "enabled": true,
+    "src": "./img",
+    "dest": "./img"
+  },
+  "javascript": {
+    "enabled": true,
+    "src": "./js",
+    "dest": "./js",
+    "engine": "rollup",
+    "transpiler": "buble",
+    "transpilerSettings": {},
+    "endpoints": [
+      {
+        "src": [
+          "**/*"
+        ],
+        "dest": [
+          {
+            "location": "./"
+          }
+        ]
+      }
+    ]
+  },
+  "project": {
+    "name": "Example",
+    "src": "./assets",
+    "dest": "./public",
+    "icon": "./public/favicon-32x32.png"
+  },
+  "styles": {
+    "enabled": true,
+    "src": "./sass",
+    "dest": "./css",
+    "engine": "sass"
+  }
+}

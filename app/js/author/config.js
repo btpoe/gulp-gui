@@ -1,5 +1,5 @@
-const writeFile = require('./helpers/write-file');
+const write = require('./helpers/write-file');
 
 module.exports = (formData) => {
-    writeFile('config.json', JSON.stringify(formData, null, '  '));
+    write.file('gulp_tasks/config.json', JSON.stringify(formData, null, '  '));
 };

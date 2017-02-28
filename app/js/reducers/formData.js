@@ -8,8 +8,8 @@ const initialState = {
     javascript: {
         src: './js',
         dest: './js',
-        engine: 'Rollup',
-        transpiler: 'Buble'
+        engine: 'rollup',
+        transpiler: 'buble'
     },
     project: {
         src: './assets',
@@ -18,7 +18,7 @@ const initialState = {
     styles: {
         src: './sass',
         dest: './css',
-        engine: 'Sass',
+        engine: 'sass',
     },
 };
 

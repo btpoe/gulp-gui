@@ -1,14 +1,17 @@
 const { Component, createElement } = require('react');
 const Form = require('react-jsonschema-form').default;
-const { update } = require('../../actions/formData');
-const updateSchema = require('../../actions/schema').update;
+const { update } = require('../actions/formData');
+const updateSchema = require('../actions/schema').update;
 
 function onError(data) {
     console.warn(data);
 }
 
 const uiSchema = {
-    dependencies: {
+    enabled: {
+        classNames: 'field-enabled',
+    },
+    devDependencies: {
         'ui:options':  {
             orderable: false,
         },
@@ -47,7 +50,7 @@ module.exports = class extends Component {
         console.log(schema);
         return createElement(Form,
             {
-                className: 'col-sm-8 config',
+                className: 'col-xs-12',
                 schema,
                 uiSchema,
                 formData,

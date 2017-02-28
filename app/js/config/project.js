@@ -6,7 +6,8 @@ module.exports = formData => ({
         title: { title: 'Project Name', type: 'string' },
         src: { title: 'Source Directory', type: 'string' },
         dest: { title: 'Distribution Directory', type: 'string' },
-        dependencies: {
+        icons: { title: 'Icon', type: 'string' },
+        devDependencies: {
             title: 'Additional Dependencies',
             description: '(Order doesn\'t matter)',
             type: 'array',

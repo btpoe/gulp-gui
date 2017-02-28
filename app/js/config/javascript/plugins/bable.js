@@ -8,6 +8,17 @@ module.exports = {
             items: {
                 type: 'string',
                 enum: [
+                    'es2015',
+                    'es2016',
+                    'es2017',
+                    'react',
+                    'stage-0',
+                    'stage-1',
+                    'stage-2',
+                    'stage-3',
+                    'stage-4',
+                ],
+                enumNames: [
                     'ES2015',
                     'ES2016',
                     'ES2017',

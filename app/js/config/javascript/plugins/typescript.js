@@ -8,6 +8,9 @@ module.exports = {
             items: {
                 type: 'string',
                 enum: [
+                    'react',
+                ],
+                enumNames: [
                     'React',
                 ],
             },

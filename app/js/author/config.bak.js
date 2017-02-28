@@ -1,5 +1,5 @@
 require('dotenv').config();
-const packageConfig = require('../package.json');
+const packageConfig = require('../../package');
 
 module.exports = {
     project: {

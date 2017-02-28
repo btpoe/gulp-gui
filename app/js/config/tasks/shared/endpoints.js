@@ -29,9 +29,9 @@ module.exports = {
                             type: 'string',
                             default: 'Production',
                             enum: [
-                                'Always',
-                                'Production',
-                                'Never',
+                                'always',
+                                'production',
+                                'never',
                             ],
                         },
                         rename: {
