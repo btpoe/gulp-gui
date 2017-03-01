@@ -1,7 +1,10 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, Menu } = require('electron');
 const devtools = require('electron-devtools-installer');
+const menuTemplate = require('./menu-template');
 const installExtension = devtools.default;
 const { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = devtools;
+
+const menu = Menu.buildFromTemplate(menuTemplate);
 
 installExtension(REACT_DEVELOPER_TOOLS, true)
     .then((name) => console.log(`Added Extension:  ${name}`))
@@ -25,6 +28,7 @@ function createWindow() {
     });
 
     mainWindow.loadURL(`file://${__dirname}/index.html`);
+    Menu.setApplicationMenu(menu);
 
     mainWindow.on('closed', function () {
         mainWindow = null

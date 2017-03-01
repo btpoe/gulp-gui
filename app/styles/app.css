@@ -3,8 +3,6 @@
     --padding: 15px;
     --navWidth: 20rem;
     --offsetFromHeader: calc(var(--headerHeight) + var(--padding));
-
-    --headerColor: #333;
 }
 
 #AppRoot {
@@ -12,7 +10,7 @@
 }
 
 header {
-    background: #222;
+    background: #cf4647;
     color: #fff;
     height: var(--headerHeight);
     left: 0;
