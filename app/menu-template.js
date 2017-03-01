@@ -1,4 +1,4 @@
-const { app, dialog } = require('electron');
+const { app } = require('electron');
 
 const template = [
     {
@@ -7,10 +7,7 @@ const template = [
             {
                 label: 'Open...',
                 click() {
-                    console.log(dialog.showOpenDialog({
-                        properties: ['openDirectory'],
-                        defaultPath: '~/'
-                    }));
+                    app.emit('open-project');
                 }
             }
         ]
