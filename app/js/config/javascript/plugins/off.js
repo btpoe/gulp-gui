@@ -1,4 +1,4 @@
 module.exports = {
     schema: {},
-    ui: {}
+    ui: {},
 };

@@ -7,52 +7,23 @@ function onError(data) {
     console.warn(data);
 }
 
-const uiSchema = {
-    enabled: {
-        classNames: 'field-enabled',
-    },
-    devDependencies: {
-        'ui:options':  {
-            orderable: false,
-        },
-    },
-    endpoints: {
-        'ui:options':  {
-            orderable: false,
-        },
-        items: {
-            dest: {
-                'ui:options':  {
-                    orderable: false,
-                },
-            },
-        },
-    },
-    transpilerSettings: {
-        pluginPresets: {
-            'ui:widget': 'checkboxes',
-        },
-    },
-};
-
 module.exports = class extends Component {
     constructor(props) {
         super(props);
 
         this.onChange = state => {
-            store.dispatch(update(this.props.activePanel, state.formData));
-            store.dispatch(updateSchema());
+            window.store.dispatch(update(this.props.activePanel, state.formData));
+            window.store.dispatch(updateSchema());
         };
     }
 
     render() {
         const { schema, formData } = this.props;
-        console.log(schema);
         return createElement(Form,
             {
                 className: 'col-xs-12',
-                schema,
-                uiSchema,
+                schema: schema.schema,
+                uiSchema: schema.ui,
                 formData,
                 onChange: this.onChange,
                 onSubmit: this.onChange,

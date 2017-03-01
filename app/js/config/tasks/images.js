@@ -2,12 +2,18 @@ const enabled = require('./shared/enabled');
 const endpoints = require('./shared/endpoints');
 
 module.exports = formData => ({
-    title: 'Images',
-    type: 'object',
-    properties: {
-        enabled,
-        src: { title: 'Source Directory', type: 'string' },
-        dest: { title: 'Destination Directory', type: 'string' },
+    schema: {
+        title: 'Images',
+        type: 'object',
+        properties: {
+            enabled: enabled.schema,
+            src: { title: 'Source Directory', type: 'string' },
+            dest: { title: 'Destination Directory', type: 'string' },
+        },
+        endpoints: endpoints.schema,
     },
-    endpoints,
+    ui: {
+        enabled: enabled.ui,
+        endpoints: endpoints.ui,
+    }
 });
