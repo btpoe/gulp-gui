@@ -2,6 +2,7 @@ const { Component, createElement } = require('react');
 const { connect } = require('react-redux');
 const Nav = require('./Navigation');
 const SettingsPanel = require('./SettingsPanel');
+const TaskRunners = require('./TaskRunners');
 
 function mapStateToProps(state) {
     return {
@@ -29,6 +30,7 @@ class App extends Component {
         const formData = this.props.formData[activePanel];
 
         return createElement('div', { className: 'row' },
+            createElement(TaskRunners, { formData }),
             createElement(Nav, { setActivePanel: this.setActivePanel, activePanel }),
             createElement(SettingsPanel, { schema, formData, activePanel })
         );

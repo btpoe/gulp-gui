@@ -35,5 +35,9 @@ module.exports = {
             },
         },
     },
-    ui: {},
+    ui: {
+        presets: {
+            'ui:widget': 'checkboxes',
+        },
+    },
 };

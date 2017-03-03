@@ -11,12 +11,10 @@ module.exports = {
                     enum: [
                         'node-resolve',
                         'commonjs',
-                        'react',
                     ],
                     enumNames: [
                         'Node Resolve',
                         'CommonJS',
-                        'React',
                     ],
                 },
                 uniqueItems: true,

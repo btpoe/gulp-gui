@@ -1,4 +1,5 @@
 const { Component, createElement } = require('react');
+const _ = require('lodash');
 
 const navKeys = ['project', 'browserSync', 'icons', 'images', 'javascript', 'styles'];
 
