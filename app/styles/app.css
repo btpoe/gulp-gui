@@ -23,12 +23,28 @@ header {
 }
 
 .navigation {
-    bottom: 0;
+    bottom: var(--padding);
     left: 0;
     position: fixed;
     top: var(--offsetFromHeader);
     width: var(--navWidth);
     z-index: 1;
+}
+
+.nav {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.app-settings {
+    margin-top: auto !important;
+}
+
+.app-settings .glyphicon {
+    font-size: 1.5em;
+    margin-right: 0.75rem;
+    vertical-align: -0.15em;
 }
 
 .field-enabled {

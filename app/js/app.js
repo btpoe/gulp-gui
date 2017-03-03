@@ -9,9 +9,7 @@ const processStore = require('./store/processStore');
 
 const store = window.store = configureStore();
 
-store.subscribe(() => {
-    processStore(store);
-});
+store.subscribe(processStore);
 
 render(
     React.createElement(Provider, { store },

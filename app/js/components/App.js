@@ -1,7 +1,8 @@
 const { Component, createElement } = require('react');
 const { connect } = require('react-redux');
 const Nav = require('./Navigation');
-const SettingsPanel = require('./SettingsPanel');
+const ConfigForm = require('./ConfigForm');
+const SettingsForm = require('./SettingsForm');
 const TaskRunners = require('./TaskRunners');
 
 function mapStateToProps(state) {
@@ -26,13 +27,21 @@ class App extends Component {
 
     render() {
         const { activePanel } = this.state;
-        const schema = this.props.schema[activePanel];
-        const formData = this.props.formData[activePanel];
+        let mainPanel;
+
+
+        if (activePanel === 'appSettings') {
+            mainPanel = createElement(SettingsForm);
+        } else {
+            const schema = this.props.schema[activePanel];
+            const formData = this.props.formData[activePanel];
+            mainPanel = createElement(ConfigForm, { schema, formData, activePanel });
+        }
 
         return createElement('div', { className: 'row' },
-            createElement(TaskRunners, { formData }),
+            createElement(TaskRunners, { formData: this.props.formData }),
             createElement(Nav, { setActivePanel: this.setActivePanel, activePanel }),
-            createElement(SettingsPanel, { schema, formData, activePanel })
+            mainPanel
         );
     }
 }

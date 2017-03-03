@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
-const { UPDATE } = require('../actions/formData');
+const { PROJECT_DIRECTORY } = require('../appSettings');
+const { UPDATE, LOAD } = require('../actions/formData');
 
 let initialState = {
     images: {
@@ -24,7 +25,7 @@ let initialState = {
     },
 };
 
-const currentProject = window.localStorage.getItem('projectRootDirectory');
+const currentProject = window.localStorage.getItem(PROJECT_DIRECTORY);
 if (currentProject && fs.existsSync(path.join(currentProject, 'gulp_tasks/config.json'))) {
     initialState = require(path.join(currentProject, 'gulp_tasks/config.json'));
 }
@@ -33,6 +34,8 @@ module.exports = function(state = initialState, action) {
     switch (action.type) {
         case UPDATE:
             return Object.assign({}, state, { [action.key]: action.data });
+        case LOAD:
+            return action.data;
         default:
             return state;
     }

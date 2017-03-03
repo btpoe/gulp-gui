@@ -1,8 +1,8 @@
 const _ = require('lodash');
-const authorConfig = require('../author/config');
+const writeConfig = require('../author/writeConfig');
 
-function processStore(store) {
-    authorConfig(store.getState().formData);
+function processStore() {
+    writeConfig(window.store.getState().formData);
 }
 
 module.exports = _.debounce(processStore);
