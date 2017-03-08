@@ -1,26 +1,45 @@
+const config = require('../../../config').javascript;
+const path = require('path');
+const flatmap = require('gulp-flatmap');
+const sourcemaps = require('gulp-sourcemaps');
 const browserify = require('browserify');
 const browserifyInc = require('browserify-incremental');
-const source = require('vinyl-source-stream');
 const buffer = require('vinyl-buffer');
-const sourcemaps = require('gulp-sourcemaps');
+const source = require('vinyl-source-stream');
 
-module.exports = function(gulpSrc, endpoint) {
-    const fileName = endpoint.src;
+function getTranspiler(config) {
+    if (config === 'babel') {
+        return 'babelify';
+    }
+    if (config === 'buble') {
+        return 'bubleify';
+    }
+    if (config === 'typescript') {
+        return 'tsify';
+    }
+    return false;
+}
 
-    const engineSettings = Object.assign({}, defaults, config.engineAdvandcedSettings || {}, browserifyInc.args);
+module.exports = function (gulpSrc) {
+    return gulpSrc
+        .pipe(flatmap((stream, file) => {
+            const bundle = browserify(browserifyInc.args);
+            bundle.add(file.path);
 
-    const bundle = browserify(engineSettings);
+            const transpiler = getTranspiler(config.transpiler);
+            if (transpiler) {
+                bundle.transform(transpiler, config.transpilerSettings)
+            }
 
-    bundle.add(endpoint.src);
+            if (config.engineSettings.plugins.contains('shim')) {
+                bundle.transform('browserify-shim', { global: true });
+            }
 
-    bundle
-        .transform(transpiler, { presets: ["es2015", "react"] })
-        .transform('browserify-shim', { global: true });
+            browserifyInc(bundle, { cacheFile: './gulp_tasks/.cache/javascript/' + (file.path.replace(/[\/\\.\-_]+/g, '-')) + '.json' });
 
-    browserifyInc(bundle, {cacheFile: './gulp_tasks/.cache/javascript/' + (fileName.replace(/[\/\\.\-_]+/g, '-')) + '.json'});
-
-    return bundle.bundle()
-        .pipe(source(endpoint.src.split('/').pop()))
-        .pipe(buffer())
-        .pipe(sourcemaps.init({loadMaps: true}));
+            return bundle.bundle()
+                .pipe(source(path.basename(file.path)))
+                .pipe(buffer())
+                .pipe(sourcemaps.init({ loadMaps: true }));
+        }));
 };

@@ -9,6 +9,12 @@
     "src": "./js",
     "dest": "./js",
     "engine": "rollup",
+    "engineSettings": {
+      "plugins": [
+        "node-resolve",
+        "commonjs"
+      ]
+    },
     "transpiler": "buble",
     "transpilerSettings": {},
     "endpoints": [

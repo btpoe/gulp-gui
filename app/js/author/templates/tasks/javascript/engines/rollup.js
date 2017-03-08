@@ -1,30 +1,42 @@
-const rollup = require('rollup-stream');
-const source = require('vinyl-source-stream');
-const buffer = require('vinyl-buffer');
+const config = require('../../../config').javascript;
+const path = require('path');
+const flatmap = require('gulp-flatmap');
 const sourcemaps = require('gulp-sourcemaps');
+const rollup = require('rollup-stream');
+const buffer = require('vinyl-buffer');
+const source = require('vinyl-source-stream');
+
+const plugins = config.engineSettings.plugins.map(plugin =>
+    require(`rollup-plugin-${plugin}`)()
+);
+plugins.push(
+    require(`rollup-plugin-${config.transpiler}`)(config.transpilerSettings)
+);
 
 const endpointConfigs = {};
 
-module.exports = function(gulpSrc, endpoint) {
-    const fileName = endpoint.src;
+module.exports = function (gulpSrc) {
+    return gulpSrc
+        .pipe(flatmap((stream, file) => {
+            console.log('TESTING:tasks/javascript/engines/rollup,ln:20\n', file.path);
+            console.log(file);
+            if (!endpointConfigs[file.path]) {
+                endpointConfigs[file.path] = {
+                    entry: file.path,
+                    sourceMap: true,
+                    format: 'iife',
+                    plugins,
+                };
+            }
 
-    if (!endpointConfigs[endpoint.src]) {
-        endpointConfigs[endpoint.src] = {
-            entry: endpoint.src,
-            sourceMap: true,
-            plugins: [
-                nodeResolve({
-                    extensions: ['.js', '.jsx'],
-                }),
-                commonjs(),
-                buble(),
-            ],
-        };
-    }
+            const endpointConfig = endpointConfigs[file.path];
 
-    return rollup(endpointConfigs[endpoint.src])
-        .on('bundle', bundle => { endpointConfigs[endpoint.src].cache = bundle })
-        .pipe(source(endpoint.src.split('/').pop()))
-        .pipe(buffer())
-        .pipe(sourcemaps.init({loadMaps: true}));
+            return rollup(endpointConfig)
+                .on('bundle', bundle => {
+                    endpointConfig.cache = bundle
+                })
+                .pipe(source(path.basename(file.path)))
+                .pipe(buffer())
+                .pipe(sourcemaps.init({ loadMaps: true }));
+        }));
 };

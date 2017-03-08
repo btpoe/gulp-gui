@@ -12,11 +12,6 @@ const notificationFor = require('./notification-for');
 const resolve = require('./resolve');
 const config = require('../config');
 
-const DEFAULTS = {
-    buildProcess: src => src,
-    minifier: false,
-};
-
 function destFolder(dest) {
     if (path.extname(dest).length) {
         return path.parse(dest).dir;
@@ -24,13 +19,6 @@ function destFolder(dest) {
     return dest;
 }
 
-/**
- * Task Generator
- * Pull settings from the config file found at `./gulp_tasks/config.js`. The taskName provided is the key to the config
- * settings to use for this task. A watch task will also be created if there is a watch string provided in the config.
- * @param {object} options - task config
- * @returns {{task: function, watchTask: function}}
- */
 module.exports = (options) => {
     const { taskName, buildProcess, minifier } = Object.assign({}, DEFAULTS, options);
     // generate task name for the watcher
@@ -48,7 +36,7 @@ module.exports = (options) => {
 
         // create gulp source
         let gulpSrc = gulp.src(resolve('src', taskName, endpoint), options)
-            // log errors for all tasks
+        // log errors for all tasks
             .on('error', logError);
 
         // pass gulpSrc into the build process

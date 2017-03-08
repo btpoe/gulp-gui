@@ -39,6 +39,7 @@
     "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-stream": "^1.19.0",
     "svgo": "^0.7.1",
+    "through2": "^2.0.3",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "yargs": "^6.6.0"
