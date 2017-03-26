@@ -1,7 +1,7 @@
 const { exec } = require('child_process');
 const { Component, createElement } = require('react');
 const _  = require('lodash');
-const { PROJECT_DIRECTORY } = require('../appSettings');
+const { projectDirectory } = require('../appSettings');
 
 const clickInMenu = Symbol('click in modal');
 
@@ -53,7 +53,7 @@ module.exports = class extends Component {
                 }
 
                 this.state[watch ? 'watching' : 'building'][taskName] = exec(command, {
-                    cwd: window.localStorage.getItem(PROJECT_DIRECTORY),
+                    cwd: projectDirectory(),
                 });
             }
 

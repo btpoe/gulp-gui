@@ -8,6 +8,7 @@ module.exports = formData => ({
             src: { title: 'Source Directory', type: 'string' },
             dest: { title: 'Distribution Directory', type: 'string' },
             icons: { title: 'Icon', type: 'string' },
+            packageManager: { title: 'Package Manager', type: 'string', enum: ['npm', 'yarn'], default: 'npm' },
             devDependencies: {
                 title: 'Additional Dependencies',
                 description: '(Order doesn\'t matter)',

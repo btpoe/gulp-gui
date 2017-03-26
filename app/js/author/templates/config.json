@@ -41,5 +41,11 @@
     "src": "./sass",
     "dest": "./css",
     "engine": "sass"
+  },
+  "icons": {
+    "enabled": true,
+    "src": "./img/icons",
+    "dest": "./img/icons",
+    "symbolPack": true
   }
 }

@@ -1,9 +1,15 @@
 const fs = require('fs');
 const path = require('path');
-const { PROJECT_DIRECTORY } = require('../appSettings');
+const { projectDirectory } = require('../appSettings');
 const { UPDATE, LOAD } = require('../actions/formData');
 
 let initialState = {
+    browserSync: {
+        enabled: true,
+    },
+    icons: {
+        enabled: true,
+    },
     images: {
         src: './img',
         dest: './img',
@@ -17,6 +23,7 @@ let initialState = {
     project: {
         src: './assets',
         dest: './public',
+        dependencies: [],
     },
     styles: {
         src: './sass',
@@ -25,7 +32,7 @@ let initialState = {
     },
 };
 
-const currentProject = window.localStorage.getItem(PROJECT_DIRECTORY);
+const currentProject = projectDirectory();
 if (currentProject && fs.existsSync(path.join(currentProject, 'gulp_tasks/config.json'))) {
     initialState = require(path.join(currentProject, 'gulp_tasks/config.json'));
 }

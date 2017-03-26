@@ -18,8 +18,6 @@ const endpointConfigs = {};
 module.exports = function (gulpSrc) {
     return gulpSrc
         .pipe(flatmap((stream, file) => {
-            console.log('TESTING:tasks/javascript/engines/rollup,ln:20\n', file.path);
-            console.log(file);
             if (!endpointConfigs[file.path]) {
                 endpointConfigs[file.path] = {
                     entry: file.path,

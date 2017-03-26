@@ -1,18 +1,26 @@
+const path = require('path');
 const gulp = require('gulp');
 const svgmin = require('gulp-svgmin');
-const svgstore = require('gulp-svgstore');
+const rename = require('gulp-rename');
 const createTask = require('../utils/create-task');
 const config = require('../config').icons;
-
-const destination = config.dest;
-config.dest = config.dest.replace(/\/icons$/, '');
 
 module.exports = createTask({
     taskName: 'icons',
     buildProcess(gulpSrc) {
+        if (config.symbolPack) {
+            const svgstore = require('gulp-svgstore');
+
+            gulp.src(config.src)
+                .pipe(svgmin(config.minifySettings))
+                .pipe(svgstore(config.svgStoreSettings))
+                .pipe(rename({
+                    basename: path.basename(config.dest)
+                }))
+                .pipe(gulp.dest(path.dirname(config.dest)))
+        }
+
         return gulpSrc
-            .pipe(svgmin(config.minifySettings))
-            .pipe(gulp.dest(destination))
-            .pipe(svgstore(config.svgStoreSettings));
     },
+    minifier: svgmin
 });
