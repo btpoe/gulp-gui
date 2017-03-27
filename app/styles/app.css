@@ -6,7 +6,15 @@
 }
 
 #AppRoot {
-    padding: var(--offsetFromHeader) var(--padding) var(--padding) var(--navWidth);
+    height: 100vh;
+    overflow-y: hidden;
+    padding: var(--headerHeight) var(--padding) 0 var(--navWidth);
+}
+
+.react-root {
+    height: 100%;
+    overflow-y: auto;
+    padding: var(--padding) 0;
 }
 
 header {
@@ -65,4 +73,47 @@ header {
 
 .task-runners .btn-group {
     margin-right: var(--padding);
+}
+
+.array-item > .col-xs-9 {
+    width: calc(100% - 8rem);
+}
+
+.array-item-toolbox {
+    width: 8rem;
+}
+
+.dest-col-rename legend {
+    display: none;
+}
+
+.dest-col-rename fieldset .form-group {
+    width: 47%;
+    display: inline-block;
+}
+
+.dest-col-rename fieldset .form-group:last-child {
+    margin-left: 6%
+}
+
+@media (min-width: 48em) {
+    .dest-row {
+        display: flex;
+    }
+
+    .dest-col-location {
+        flex-basis: 60rem;
+        flex-grow: 2;
+    }
+
+    .dest-col-minify {
+        flex-basis: 20rem;
+        flex-grow: 1;
+        min-width: 12.5rem;
+    }
+
+    .dest-col-rename {
+        flex-basis: 40rem;
+        flex-grow: 1;
+    }
 }

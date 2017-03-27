@@ -1,8 +1,8 @@
 const { createElement } = require('react');
-const { updateUserConfig } = require('../appSettings');
+const app = require('../appSettings');
 
 function saveDefault() {
-    updateUserConfig(window.store.getState().formData);
+    app.userConfig = window.store.getState().formData;
 }
 
 module.exports = props =>

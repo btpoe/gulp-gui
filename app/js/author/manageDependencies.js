@@ -1,5 +1,5 @@
 const { exec } = require('child_process');
-const { projectDirectory } = require('../appSettings');
+const app = require('../appSettings');
 
 const api = {
     npm: {
@@ -12,7 +12,15 @@ const api = {
     },
 };
 
-module.exports = function(manager, depsToAdd, depsToRemove) {
+let runningProcess;
+let queuedProcess;
+
+module.exports = function manageDependencies(manager, depsToAdd, depsToRemove) {
+    if (runningProcess) {
+        queuedProcess = [manager, depsToAdd, depsToRemove];
+        return;
+    }
+
     const commands = [];
 
     if (depsToAdd.length) {
@@ -23,7 +31,13 @@ module.exports = function(manager, depsToAdd, depsToRemove) {
         commands.push(`${manager} ${api[manager].uninstall} ${depsToRemove.join(' ')} -D`);
     }
 
-    exec(commands.join(' && '), {
-        cwd: projectDirectory()
+    runningProcess = exec(commands.join(' && '), {
+        cwd: app.projectDirectory
+    }, data => data).on('exit', () => {
+        runningProcess = null;
+        if (queuedProcess) {
+            manageDependencies.apply(null, queuedProcess);
+            queuedProcess = null
+        }
     });
 };

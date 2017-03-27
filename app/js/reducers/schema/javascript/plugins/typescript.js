@@ -3,7 +3,7 @@ module.exports = {
         title: 'Typescript Settings',
         type: 'object',
         properties: {
-            pluginPresets: {
+            presets: {
                 title: 'Plugins',
                 type: 'array',
                 items: {
@@ -19,5 +19,9 @@ module.exports = {
             },
         },
     },
-    ui: {},
+    ui: {
+        presets: {
+            'ui:widget': 'checkboxes',
+        },
+    },
 };

@@ -2,6 +2,7 @@ const { Component, createElement } = require('react');
 const Form = require('react-jsonschema-form').default;
 const { update } = require('../actions/formData');
 const updateSchema = require('../actions/schema').update;
+const fields = require('./fields');
 
 function onError(data) {
     console.warn(data);
@@ -24,6 +25,7 @@ module.exports = class extends Component {
                 className: 'col-xs-12',
                 schema: schema.schema,
                 uiSchema: schema.ui,
+                fields,
                 formData,
                 onChange: this.onChange,
                 onSubmit: this.onChange,

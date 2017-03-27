@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { projectDirectory } = require('../appSettings');
+const app = require('../appSettings');
 const { UPDATE, LOAD } = require('../actions/formData');
 
 let initialState = {
@@ -32,9 +32,8 @@ let initialState = {
     },
 };
 
-const currentProject = projectDirectory();
-if (currentProject && fs.existsSync(path.join(currentProject, 'gulp_tasks/config.json'))) {
-    initialState = require(path.join(currentProject, 'gulp_tasks/config.json'));
+if (fs.existsSync(app.gulpConfigPath)) {
+    initialState = app.gulpConfig;
 }
 
 module.exports = function(state = initialState, action) {

@@ -1,7 +1,7 @@
 const { exec } = require('child_process');
 const { Component, createElement } = require('react');
 const _  = require('lodash');
-const { projectDirectory } = require('../appSettings');
+const app = require('../appSettings');
 
 const clickInMenu = Symbol('click in modal');
 
@@ -53,7 +53,7 @@ module.exports = class extends Component {
                 }
 
                 this.state[watch ? 'watching' : 'building'][taskName] = exec(command, {
-                    cwd: projectDirectory(),
+                    cwd: app.projectDirectory,
                 });
             }
 
@@ -72,6 +72,9 @@ module.exports = class extends Component {
 
     render() {
         const actions = watch => _.map(this.props.formData, (options, key) => {
+            if (typeof options !== 'object') {
+                return null;
+            }
             return createElement('li', { key, className: options.enabled ? '' : 'disabled' },
                 createElement('a', { href: '#', onClick: this.runTask(options.enabled, key, watch) }, _.startCase(key))
             );

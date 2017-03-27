@@ -38,7 +38,7 @@ class App extends Component {
             mainPanel = createElement(ConfigForm, { schema, formData, activePanel });
         }
 
-        return createElement('div', { className: 'row' },
+        return createElement('div', { className: 'react-root row' },
             createElement(TaskRunners, { formData: this.props.formData }),
             createElement(Nav, { setActivePanel: this.setActivePanel, activePanel }),
             mainPanel

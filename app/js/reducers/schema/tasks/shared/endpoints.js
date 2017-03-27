@@ -58,6 +58,9 @@ module.exports = {
                 'ui:options':  {
                     orderable: false,
                 },
+                items: {
+                    'ui:field': 'destination',
+                },
             },
         },
     },

@@ -3,10 +3,10 @@ const path = require('path');
 const { execSync } = require('child_process');
 const mkdirp = require('mkdirp');
 const firstLine = require('./firstLine');
-const { projectDirectory } = require('../../appSettings');
+const app = require('../../appSettings');
 
 function file(location, data, backup = false) {
-    const filePath = path.join(projectDirectory(), location);
+    const filePath = path.resolve(app.projectDirectory, location);
     mkdirp(path.dirname(filePath));
     if (backup && fs.existsSync(filePath) && firstLine(filePath) !== data.toString().split('\n')[0]) {
         const parts = path.parse(filePath);

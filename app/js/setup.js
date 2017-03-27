@@ -1,26 +1,19 @@
 const fs = require('fs');
-const path = require('path');
 const { ipcRenderer } = require('electron');
-const { USER_CONFIG, projectDirectory, DEFAULT_CONFIG_PATH } = require('./appSettings');
+const app = require('./appSettings');
 const { load } = require('./actions/formData');
 const copyTemplates = require('./author/copyTemplates');
-const freshRequire = require('./author/helpers/freshRequire');
 
 ipcRenderer.on('open-project', (e, directory) => {
-    projectDirectory(directory);
-
-    const taskDirectory = path.join(directory, 'gulp_tasks');
-    const configFile = path.join(taskDirectory, 'config.json');
+    app.projectDirectory = directory;
 
     copyTemplates();
 
     let formData;
-    if (fs.existsSync(configFile)) {
-        formData = freshRequire(configFile);
-    } else if (formData = window.localStorage.getItem(USER_CONFIG)) {
-        formData = JSON.parse(formData);
+    if (fs.existsSync(app.gulpConfigPath)) {
+        formData = app.gulpConfig;
     } else {
-        formData = freshRequire(DEFAULT_CONFIG_PATH);
+        formData = app.userConfig || app.defaultConfigFile;
     }
     window.store.dispatch(load(formData));
 });

@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const write = require('./helpers/writeFile');
-const { GULPFILE_PATH } = require('../appSettings');
+const app = require('../appSettings');
 
 const ignoreFiles = [
     '\\.DS_Store',
@@ -14,5 +14,5 @@ module.exports = () => {
         filter: new RegExp(ignoreFiles.join('|')),
         backup: true,
     });
-    write.file('gulpfile.js', fs.readFileSync(GULPFILE_PATH), true);
+    write.file('gulpfile.js', app.defaultGulpFile, true);
 };
