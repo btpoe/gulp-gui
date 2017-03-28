@@ -52,28 +52,22 @@ module.exports = class extends Component {
                     command += ' -- watch';
                 }
 
-                const state = Object.assign({}, this.state, {
-                    [watch ? 'watching' : 'building']: {
-                        [taskName]: exec(command, {
-                            cwd: app.projectDirectory,
-                        }).on('exit', () => {
-                            const state = Object.assign({}, this.state, {
-                                [watch ? 'watching' : 'building']: {
-                                    [taskName]: null
-                                }
-                            });
-                            console.log(this.state[watch ? 'watching' : 'building'][taskName]);
-                            this.setState(state);
-                        })
-                    }
+                const buildType = watch ? 'watching' : 'building';
+
+                const taskProcess = exec(command, {
+                    cwd: app.projectDirectory,
+                }).on('exit', () => {
+                    const state = Object.assign({}, this.state[buildType], {
+                        [taskName]: null
+                    });
+                    this.setState({ [buildType]: state });
                 });
 
-                this.setState(state)
-
+                const state = Object.assign({}, this.state[buildType], {
+                    [taskName]: taskProcess
+                });
+                this.setState({ [buildType]: state });
             }
-
-            // do stop the watcher:
-            // childProcess.kill('SIGINT');
         };
     }
 
@@ -87,17 +81,17 @@ module.exports = class extends Component {
 
     render() {
         const actions = watch => _.map(this.props.formData, (options, key) => {
-            if (typeof options !== 'object') {
+            if (typeof options !== 'object' || typeof options.enabled !== 'boolean') {
                 return null;
             }
-            return createElement('li', { key, className: options.enabled ? '' : 'disabled' },
+            return createElement('li', { key, className: options.enabled ? this.state[watch ? 'watching' : 'building'][key] ? 'btn-warning' : '' : 'disabled' },
                 createElement('a', { href: '#', onClick: this.runTask(options.enabled, key, watch) }, _.startCase(key))
             );
         });
 
         return createElement('div', { className: 'task-runners' },
             createElement('div', { className: 'btn-group' },
-                createElement('button', { type: 'button', className: 'btn btn-info btn-sm', onClick: this.buildAll }, 'Build'),
+                createElement('button', { type: 'button', className: `btn btn-${this.state.building.all ? 'warning' : 'info'} btn-sm`, onClick: this.buildAll }, 'Build'),
                 createElement('button', { type: 'button', className: 'btn btn-info btn-sm dropdown-toggle', onClick: toggleMenu },
                     createElement('span', { className: 'caret' }),
                     createElement('span', { className: 'sr-only' }, 'Toggle Dropdown')
@@ -111,7 +105,7 @@ module.exports = class extends Component {
                 )
             ),
             createElement('div', { className: 'btn-group' },
-                createElement('button', { type: 'button', className: 'btn btn-info btn-sm', onClick: this.watchAll }, 'Watch'),
+                createElement('button', { type: 'button', className: `btn btn-${this.state.watching.all ? 'warning' : 'info'} btn-sm`, onClick: this.watchAll }, 'Watch'),
                 createElement('button', { type: 'button', className: 'btn btn-info btn-sm dropdown-toggle', onClick: toggleMenu },
                     createElement('span', { className: 'caret' }),
                     createElement('span', { className: 'sr-only' }, 'Toggle Dropdown')
