@@ -31,13 +31,15 @@ module.exports = function manageDependencies(manager = 'npm', depsToAdd, depsToR
         commands.push(`${manager} ${api[manager].uninstall} ${depsToRemove.join(' ')} -D`);
     }
 
-    runningProcess = exec(commands.join(' && '), {
-        cwd: app.projectDirectory
-    }, data => data).on('exit', () => {
-        runningProcess = null;
-        if (queuedProcess) {
-            manageDependencies.apply(null, queuedProcess);
-            queuedProcess = null
-        }
-    });
+    if (commands.length) {
+        runningProcess = exec(commands.join(' && '), {
+            cwd: app.projectDirectory
+        }, data => data).on('exit', () => {
+            runningProcess = null;
+            if (queuedProcess) {
+                manageDependencies.apply(null, queuedProcess);
+                queuedProcess = null
+            }
+        });
+    }
 };
