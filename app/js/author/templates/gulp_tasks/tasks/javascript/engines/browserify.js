@@ -1,4 +1,3 @@
-const config = require('../../../config').javascript;
 const path = require('path');
 const flatmap = require('gulp-flatmap');
 const sourcemaps = require('gulp-sourcemaps');
@@ -7,15 +6,19 @@ const browserifyInc = require('browserify-incremental');
 const buffer = require('vinyl-buffer');
 const source = require('vinyl-source-stream');
 
-function getTranspiler(config) {
-    if (config === 'babel') {
-        return 'babelify';
-    }
-    if (config === 'buble') {
-        return 'bubleify';
-    }
-    if (config === 'typescript') {
-        return 'tsify';
+const {
+    transpiler = 'off',
+    transpilerSettings = {},
+    engineSettings = { plugins: [] }
+} = require('../../../config').javascript;
+
+function getTranspiler() {
+    switch (transpiler) {
+        case 'babel':
+        case 'buble':
+            return `${transpiler}ify`;
+        case 'typescript':
+            return 'tsify';
     }
     return false;
 }
@@ -26,16 +29,16 @@ module.exports = function (gulpSrc) {
             const bundle = browserify(browserifyInc.args);
             bundle.add(file.path);
 
-            const transpiler = getTranspiler(config.transpiler);
-            if (transpiler) {
-                bundle.transform(transpiler, config.transpilerSettings)
+            if (transpiler !== 'off') {
+                const transpilerPlugin = getTranspiler();
+                bundle.transform(transpilerPlugin, transpilerSettings)
             }
 
-            if (config.engineSettings.plugins.contains('shim')) {
+            if (engineSettings.plugins.contains('shim')) {
                 bundle.transform('browserify-shim', { global: true });
             }
 
-            browserifyInc(bundle, { cacheFile: './gulp_tasks/.cache/javascript/' + (file.path.replace(/[\/\\.\-_]+/g, '-')) + '.json' });
+            browserifyInc(bundle, { cacheFile: './gulp_tasks/.cache/javascript/' + (file.path.replace(/\/\\\._/g, '-')) + '.json' });
 
             return bundle.bundle()
                 .pipe(source(path.basename(file.path)))

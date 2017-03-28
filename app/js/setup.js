@@ -1,4 +1,3 @@
-const fs = require('fs');
 const { ipcRenderer } = require('electron');
 const app = require('./appSettings');
 const { load } = require('./actions/formData');
@@ -9,11 +8,5 @@ ipcRenderer.on('open-project', (e, directory) => {
 
     copyTemplates();
 
-    let formData;
-    if (fs.existsSync(app.gulpConfigPath)) {
-        formData = app.gulpConfig;
-    } else {
-        formData = app.userConfig || app.defaultConfigFile;
-    }
-    window.store.dispatch(load(formData));
+    window.store.dispatch(load(app.gulpConfig));
 });

@@ -1,0 +1,84 @@
+{
+  "browserSync": {
+    "endabled": true
+  },
+  "images": {
+    "enabled": true,
+    "src": "./img",
+    "dest": "./img"
+  },
+  "javascript": {
+    "enabled": true,
+    "src": "./js",
+    "dest": "./js",
+    "engine": "rollup",
+    "engineSettings": {
+      "plugins": [
+        "node-resolve",
+        "commonjs"
+      ]
+    },
+    "transpiler": "buble",
+    "transpilerSettings": {},
+    "endpoints": [
+      {
+        "src": [
+          "./app.js"
+        ],
+        "dest": [
+          {
+            "location": "./",
+            "minify": "always"
+          },
+          {
+            "location": "./",
+            "minify": "never",
+            "rename": {
+              "suffix": "-dev"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "project": {
+    "name": "Example",
+    "src": "./assets",
+    "dest": "./public",
+    "icon": "./public/favicon-32x32.png",
+    "packageManager": "npm",
+    "devDependencies": []
+  },
+  "styles": {
+    "enabled": true,
+    "src": "./sass",
+    "dest": "./css",
+    "engine": "sass",
+    "endpoints": [
+      {
+        "src": [
+          "./app.scss"
+        ],
+        "dest": [
+          {
+            "location": "./",
+            "minify": "always"
+          },
+          {
+            "location": "./",
+            "minify": "never",
+            "rename": {
+              "suffix": "-dev"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "icons": {
+    "enabled": true,
+    "src": "./icons",
+    "dest": "./img/icons",
+    "symbolPack": true
+  }
+}

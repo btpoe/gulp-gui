@@ -15,7 +15,7 @@ const api = {
 let runningProcess;
 let queuedProcess;
 
-module.exports = function manageDependencies(manager, depsToAdd, depsToRemove) {
+module.exports = function manageDependencies(manager = 'npm', depsToAdd, depsToRemove) {
     if (runningProcess) {
         queuedProcess = [manager, depsToAdd, depsToRemove];
         return;

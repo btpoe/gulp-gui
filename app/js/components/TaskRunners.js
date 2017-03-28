@@ -52,9 +52,24 @@ module.exports = class extends Component {
                     command += ' -- watch';
                 }
 
-                this.state[watch ? 'watching' : 'building'][taskName] = exec(command, {
-                    cwd: app.projectDirectory,
+                const state = Object.assign({}, this.state, {
+                    [watch ? 'watching' : 'building']: {
+                        [taskName]: exec(command, {
+                            cwd: app.projectDirectory,
+                        }).on('exit', () => {
+                            const state = Object.assign({}, this.state, {
+                                [watch ? 'watching' : 'building']: {
+                                    [taskName]: null
+                                }
+                            });
+                            console.log(this.state[watch ? 'watching' : 'building'][taskName]);
+                            this.setState(state);
+                        })
+                    }
                 });
+
+                this.setState(state)
+
             }
 
             // do stop the watcher:

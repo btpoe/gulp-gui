@@ -7,7 +7,7 @@ const app = require('../../appSettings');
 
 function file(location, data, backup = false) {
     const filePath = path.resolve(app.projectDirectory, location);
-    mkdirp(path.dirname(filePath));
+    mkdirp.sync(path.dirname(filePath));
     if (backup && fs.existsSync(filePath) && firstLine(filePath) !== data.toString().split('\n')[0]) {
         const parts = path.parse(filePath);
         delete parts.base;
@@ -23,6 +23,7 @@ function cp(source, dest, opts) {
         .split('\n')
         .filter(filePath => filePath.length && (!opts.filter || !opts.filter.test(filePath)))
         .forEach(filePath => {
+            console.log(filePath);
             const sourceFilePath = path.join(source, filePath);
             const destFilePath = path.join(dest, filePath);
 

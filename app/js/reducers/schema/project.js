@@ -4,11 +4,11 @@ module.exports = formData => ({
         type: 'object',
         required: ['title'],
         properties: {
-            title: { title: 'Project Name', type: 'string' },
+            name: { title: 'Project Name', type: 'string' },
             src: { title: 'Source Directory', type: 'string' },
             dest: { title: 'Distribution Directory', type: 'string' },
-            icons: { title: 'Icon', type: 'string' },
-            packageManager: { title: 'Package Manager', type: 'string', enum: ['npm', 'yarn'], default: 'npm' },
+            icon: { title: 'Icon', type: 'string' },
+            packageManager: { title: 'Package Manager', type: 'string', enum: ['npm', 'yarn'] },
             devDependencies: {
                 title: 'Additional Dependencies',
                 description: '(Order doesn\'t matter)',

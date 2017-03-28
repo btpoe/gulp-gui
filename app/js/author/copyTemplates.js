@@ -1,18 +1,15 @@
 const fs = require('fs');
 const path = require('path');
 const write = require('./helpers/writeFile');
-const app = require('../appSettings');
 
 const ignoreFiles = [
     '\\.DS_Store',
-    'config\\.json',
-    'gulpfile\\.js',
+    'gulp_tasks/config.json',
 ];
 
 module.exports = () => {
-    write.cp(path.join(__dirname, 'templates'), './gulp_tasks', {
+    write.cp(path.join(__dirname, 'templates'), './', {
         filter: new RegExp(ignoreFiles.join('|')),
         backup: true,
     });
-    write.file('gulpfile.js', app.defaultGulpFile, true);
 };

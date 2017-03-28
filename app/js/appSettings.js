@@ -3,7 +3,7 @@ const path = require('path');
 
 const USER_CONFIG = 'defaultConfig';
 const PROJECT_DIRECTORY = 'projectRootDirectory';
-const DEFAULT_CONFIG_PATH = path.join(__dirname, './author/templates/config.json');
+const DEFAULT_CONFIG_PATH = path.join(__dirname, './author/templates/gulp_tasks/config.json');
 const GULPFILE_PATH = path.join(__dirname, './author/templates/gulpfile.js');
 
 const appSettings = {
@@ -15,7 +15,7 @@ const appSettings = {
         return fs.readFileSync(GULPFILE_PATH, 'utf8');
     },
     get defaultConfigFile() {
-        return fs.readFileSync(DEFAULT_CONFIG_PATH, 'utf8');
+        return JSON.parse(fs.readFileSync(DEFAULT_CONFIG_PATH, 'utf8'));
     },
 
     // Current Project
@@ -41,6 +41,10 @@ const appSettings = {
         return path.join(this.gulpTasksPath, 'config.json');
     },
     get gulpConfig() {
+        if (!fs.existsSync(this.gulpConfigPath)) {
+            this.gulpConfig = this.userConfig || this.defaultConfigFile;
+        }
+
         return JSON.parse(fs.readFileSync(this.gulpConfigPath, 'utf8'));
     },
     set gulpConfig(config) {

@@ -1,5 +1,5 @@
 module.exports = function(config) {
-    return config.dependencies.concat([
+    return config.devDependencies.concat([
         'dotenv',
         'gulp',
         'gulp-if',

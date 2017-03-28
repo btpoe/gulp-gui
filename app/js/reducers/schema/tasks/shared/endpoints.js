@@ -2,24 +2,16 @@ module.exports = {
     schema: {
         title: 'Endpoints',
         type: 'array',
-        default: [
-            {
-                src: ['**/*'],
-                dest: [
-                    { location: './' },
-                ],
-            },
-        ],
         items: {
             type: 'object',
             properties: {
                 src: {
                     title: 'Source',
                     type: 'array',
-                    items: { type: 'string', default: '**/*' },
+                    items: { type: 'string' },
                 },
                 dest: {
-                    title: 'Destinations',
+                    title: 'Destination',
                     type: 'array',
                     items: {
                         type: 'object',
@@ -28,7 +20,6 @@ module.exports = {
                             minify: {
                                 title: 'Minify',
                                 type: 'string',
-                                default: 'Production',
                                 enum: [
                                     'always',
                                     'production',

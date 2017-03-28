@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const initialFormState = require('../formData').initialState;
+const app = require('../../appSettings');
 const project = require('./project');
 const browserSync = require('./browserSync');
 const icons = require('./icons');
@@ -18,7 +18,7 @@ function stateHandler(formData) {
     )));
 }
 
-module.exports = function(state = stateHandler(initialFormState)) {
+module.exports = function(state = stateHandler(app.gulpConfig)) {
     if (window.store) {
         return stateHandler(window.store.getState().formData);
     } else {
