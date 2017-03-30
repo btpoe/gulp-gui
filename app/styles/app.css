@@ -83,36 +83,42 @@ header {
     width: 8rem;
 }
 
-.dest-col-rename legend {
+.array-col-dest-rename legend {
     display: none;
 }
 
-.dest-col-rename fieldset .form-group {
+.array-col-dest-rename fieldset .form-group {
     width: 47%;
     display: inline-block;
 }
 
-.dest-col-rename fieldset .form-group:last-child {
+.array-col-dest-rename fieldset .form-group:last-child {
     margin-left: 6%
 }
 
 @media (min-width: 48em) {
-    .dest-row {
+    .array-row {
         display: flex;
     }
 
-    .dest-col-location {
+    .array-col-dest-location {
         flex-basis: 60rem;
         flex-grow: 2;
     }
 
-    .dest-col-minify {
+    .array-col-dest-minify {
         flex-basis: 20rem;
         flex-grow: 1;
         min-width: 12.5rem;
     }
 
-    .dest-col-rename {
+    .array-col-dest-rename {
+        flex-basis: 40rem;
+        flex-grow: 1;
+    }
+
+    .array-col-lib-name,
+    .array-col-lib-global {
         flex-basis: 40rem;
         flex-grow: 1;
     }

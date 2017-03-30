@@ -30,8 +30,8 @@ module.exports = class extends Component {
 
         randId++;
 
-        return createElement('div', { className: 'row dest-row' },
-            createElement('div', { className: 'col-sm-5 dest-col-location' },
+        return createElement('div', { className: 'row array-row' },
+            createElement('div', { className: 'col-sm-5 array-col-dest-location' },
                 createElement(SchemaField, Object.assign({}, this.props, {
                     schema: schema.properties.location,
                     formData: formData.location,
@@ -40,7 +40,7 @@ module.exports = class extends Component {
                     uiSchema: {},
                 }))
             ),
-            createElement('div', { className: 'col-sm-3 dest-col-minify' },
+            createElement('div', { className: 'col-sm-3 array-col-dest-minify' },
                 createElement(SchemaField, Object.assign({}, this.props, {
                     schema: schema.properties.minify,
                     formData: formData.minify,
@@ -49,7 +49,7 @@ module.exports = class extends Component {
                     uiSchema: {},
                 }))
             ),
-            createElement('div', { className: 'col-sm-4 dest-col-rename' },
+            createElement('div', { className: 'col-sm-4 array-col-dest-rename' },
                 createElement(SchemaField, Object.assign({}, this.props, {
                     schema: schema.properties.rename,
                     formData: formData.rename,
