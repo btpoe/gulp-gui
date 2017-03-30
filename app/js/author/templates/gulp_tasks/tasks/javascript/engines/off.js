@@ -1,9 +1,15 @@
-const config = require('../../../config').javascript;
 const sourcemaps = require('gulp-sourcemaps');
 const gulpIf = require('gulp-if');
-const transpiler = config.transpiler === 'off' ? false : require(`gulp-${config.transpiler}`);
+
+const {
+    transpiler = 'off',
+    transpilerSettings = {},
+} = require('../../../config').javascript;
+
+const transpilerPlugin = transpiler === 'off' ? function() {} : require(`gulp-${transpiler}`);
 
 module.exports = function(gulpSrc) {
     return gulpSrc
-        .pipe(gulpIf(transpiler, transpiler && transpiler(config.transpilerSettings)));
+        .pipe(sourcemaps.init())
+        .pipe(gulpIf(transpiler !== 'off', transpilerPlugin(transpilerSettings)));
 };

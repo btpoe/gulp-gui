@@ -1,21 +1,20 @@
 const path = require('path');
 const config = require('../config');
 
-module.exports = function(type, task, endpoint = false) {
+module.exports = function resolve(type, task, endpoint = false) {
     function resolveEndpoint(src = '') {
         const relativePath = path.resolve(config.project[type], config[task][type], src);
         return path.join('./', relativePath);
     }
 
-    if (Array.isArray(endpoint)) {
-        return endpoint.src.map(resolveEndpoint);
-    }
     if (typeof endpoint === 'object') {
-        return resolveEndpoint(endpoint[type]);
+        return resolve(type, task, endpoint[type]);
+    }
+    if (Array.isArray(endpoint)) {
+        return endpoint.map(resolveEndpoint);
     }
     if (typeof endpoint === 'string') {
         return resolveEndpoint(endpoint);
     }
-
     return resolveEndpoint();
 };

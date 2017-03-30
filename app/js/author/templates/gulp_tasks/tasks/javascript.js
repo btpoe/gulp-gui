@@ -5,7 +5,7 @@ const {
 } = require('../config').javascript;
 
 module.exports = createTask({
-    taskName: 'scripts',
+    taskName: 'javascript',
     buildProcess: require('./javascript/engines/' + engine),
     minifier: require('gulp-uglify'),
 });

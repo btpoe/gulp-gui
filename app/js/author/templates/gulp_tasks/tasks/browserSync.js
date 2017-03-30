@@ -1,14 +1,15 @@
 const browserSync = require('browser-sync');
 const createTask = require('../utils/create-task');
-const config = require('../config').browserSync;
+const {
+    proxy = false,
+} = require('../config').browserSync;
 
-const browserSyncConfig = Object.assign({
+const browserSyncConfig = {
     reloadDebounce: 2000,
     open: false,
     ghostMode: false,
-}, {
-    proxy: config.proxy,
-});
+    proxy,
+};
 
 let browserSyncInitialized = false;
 

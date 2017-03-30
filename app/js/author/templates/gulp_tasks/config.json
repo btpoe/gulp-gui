@@ -1,6 +1,6 @@
 {
   "browserSync": {
-    "endabled": true
+    "enabled": true
   },
   "images": {
     "enabled": true,

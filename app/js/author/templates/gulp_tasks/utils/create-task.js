@@ -1,7 +1,7 @@
 const path = require('path');
 const es = require('event-stream');
 const gulp = require('gulp');
-const copy = require('gulp-copy');
+const clone = require('gulp-clone');
 const flatmap = require('gulp-flatmap');
 const gulpIf = require('gulp-if');
 const notify = require('gulp-notify');
@@ -67,7 +67,7 @@ module.exports = (options) => {
         function onProcessComplete(finalGulpSrc) {
             function toDestination(dest) {
                 return this
-                    .pipe(copy())
+                    .pipe(clone())
                     .pipe(rename(dest.rename || {}))
                     .pipe(gulpIf(dest.minify === 'always' || dest.minify === 'production' && process.env.production, minifier()))
                     .pipe(gulp.dest(destFolder(resolve('dest', taskName, dest.location))));
