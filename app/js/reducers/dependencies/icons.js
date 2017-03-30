@@ -1,15 +1,14 @@
-module.exports = function(config) {
+module.exports = function({
+    enabled = false,
+    symbolPack = false,
+}) {
     const deps = [];
 
-    if (config.enabled) {
-        deps.push(
-            'gulp-svgmin'
-        );
+    if (enabled) {
+        deps.push('gulp-svgmin');
 
-        if (config.symbolPack) {
-            deps.push(
-                'gulp-svgstore'
-            );
+        if (symbolPack) {
+            deps.push('gulp-svgstore');
         }
     }
 

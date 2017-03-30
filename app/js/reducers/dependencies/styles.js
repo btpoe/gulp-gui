@@ -1,7 +1,12 @@
-module.exports = function(config) {
+module.exports = function({
+    enabled = false,
+    engine = 'off'
+}) {
     const deps = [];
 
-    if (config.enabled) {
+    if (enabled) {
+        deps.push('gulp-cssnano');
+
         deps.push(
             'browser-sync',
             'gulp-autoprefixer',
@@ -9,11 +14,11 @@ module.exports = function(config) {
             'gulp-sourcemaps'
         );
 
-        if (config.engine !== 'off') {
-            deps.push(`gulp-${config.engine}`);
+        if (engine !== 'off') {
+            deps.push(`gulp-${engine}`);
         }
 
-        if (config.engine === 'sass') {
+        if (engine === 'sass') {
             deps.push('node-sass-import')
         }
     }

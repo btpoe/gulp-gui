@@ -1,10 +1,17 @@
-const _ = require('lodash');
-
-module.exports = function(config) {
+module.exports = function({
+    enabled = false,
+    engine = 'off',
+    transpiler = 'off',
+    engineSettings = {
+        plugins: []
+    }
+}) {
     const deps = [];
 
-    if (config.enabled) {
-        switch (config.engine) {
+    if (enabled) {
+        deps.push('gulp-uglify');
+
+        switch (engine) {
             case 'browserify':
                 deps.push(
                     'gulp-flatmap',
@@ -15,10 +22,10 @@ module.exports = function(config) {
                     'vinyl-source-stream'
                 );
 
-                switch (config.transpiler) {
+                switch (transpiler) {
                     case 'babel':
                     case 'buble':
-                        deps.push(`${config.transpiler}ify`);
+                        deps.push(`${transpiler}ify`);
                         break;
                     case 'typescript':
                         deps.push('tsify');
@@ -35,15 +42,15 @@ module.exports = function(config) {
                     'vinyl-source-stream'
                 );
 
-                _.get(config, 'engineSettings.plugins', []).forEach(plugin =>
+                engineSettings.plugins.forEach(plugin =>
                     deps.push(`rollup-plugin-${plugin}`)
                 );
 
-                switch (config.transpiler) {
+                switch (transpiler) {
                     case 'babel':
                     case 'buble':
                     case 'typescript':
-                        deps.push(`rollup-plugin-${config.transpiler}`);
+                        deps.push(`rollup-plugin-${transpiler}`);
                         break;
                 }
 
@@ -55,8 +62,8 @@ module.exports = function(config) {
                     'gulp-if'
                 );
 
-                if (config.transpiler !== 'off') {
-                    deps.push(`gulp-${config.transpiler}`);
+                if (transpiler !== 'off') {
+                    deps.push(`gulp-${transpiler}`);
                 }
                 break;
         }

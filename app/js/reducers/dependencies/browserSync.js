@@ -1,7 +1,9 @@
-module.exports = function(config) {
+module.exports = function({
+    enabled = false
+}) {
     const deps = [];
 
-    if (config.enabled) {
+    if (enabled) {
         deps.push('browser-sync');
     }
 
