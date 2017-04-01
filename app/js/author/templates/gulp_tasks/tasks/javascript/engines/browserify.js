@@ -34,8 +34,12 @@ module.exports = function (gulpSrc) {
                 bundle.transform(transpilerPlugin, transpilerSettings)
             }
 
-            if (engineSettings.plugins.contains('shim')) {
-                bundle.transform('browserify-shim', { global: true });
+            if (Array.isArray(engineSettings.externalLibraries) && engineSettings.externalLibraries.length) {
+                const globals = engineSettings.externalLibraries.reduce((g, lib) => {
+                    g[lib.name] = lib.global.replace(/^window\./, '');
+                    return g;
+                }, {});
+                bundle.transform(require('browserify-global-shim').configure(globals));
             }
 
             browserifyInc(bundle, { cacheFile: './gulp_tasks/.cache/javascript/' + (file.path.replace(/\/\\\._/g, '-')) + '.json' });

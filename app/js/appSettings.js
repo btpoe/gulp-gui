@@ -4,15 +4,11 @@ const path = require('path');
 const USER_CONFIG = 'defaultConfig';
 const PROJECT_DIRECTORY = 'projectRootDirectory';
 const DEFAULT_CONFIG_PATH = path.join(__dirname, './author/templates/gulp_tasks/config.json');
-const GULPFILE_PATH = path.join(__dirname, './author/templates/gulpfile.js');
 
 const appSettings = {
     // Gulp GUI
     get appPackage() {
         return require('../package.json');
-    },
-    get defaultGulpFile() {
-        return fs.readFileSync(GULPFILE_PATH, 'utf8');
     },
     get defaultConfigFile() {
         return JSON.parse(fs.readFileSync(DEFAULT_CONFIG_PATH, 'utf8'));
@@ -29,6 +25,17 @@ const appSettings = {
         return path.join(this.projectDirectory, 'package.json');
     },
     get projectPackage() {
+        if (!fs.existsSync(this.projectPackagePath)) {
+            const config = {
+                name: path.basename(this.projectDirectory),
+                'private': true,
+                devDependencies: {}
+            };
+            fs.writeFileSync(this.projectPackagePath, JSON.stringify(config, null, '  '));
+
+            return config;
+        }
+
         return JSON.parse(fs.readFileSync(this.projectPackagePath, 'utf8'));
     },
     set projectPackage(config) {

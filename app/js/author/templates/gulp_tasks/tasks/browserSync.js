@@ -1,7 +1,9 @@
+const gulp = require('gulp');
 const browserSync = require('browser-sync');
-const createTask = require('../utils/create-task');
+
 const {
     proxy = false,
+    src = [],
 } = require('../config').browserSync;
 
 const browserSyncConfig = {
@@ -11,16 +13,14 @@ const browserSyncConfig = {
     proxy,
 };
 
-let browserSyncInitialized = false;
+function browserSyncWatch() {
+    browserSync.init(browserSyncConfig);
+    return gulp.watch(src).on('change', browserSync.reload);
+}
 
-module.exports = createTask({
-    taskName: 'browserSync',
-    taskLogic(done) {
-        browserSyncInitialized && browserSync.reload();
-        done();
-    },
-    beforeWatch() {
-        browserSync.init(browserSyncConfig);
-        browserSyncInitialized = true;
-    },
-});
+gulp.task('browserSync:watch', browserSyncWatch);
+
+module.exports = {
+    task: null,
+    watchTask: browserSyncWatch
+};

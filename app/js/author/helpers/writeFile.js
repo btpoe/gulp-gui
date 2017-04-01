@@ -23,7 +23,6 @@ function cp(source, dest, opts) {
         .split('\n')
         .filter(filePath => filePath.length && (!opts.filter || !opts.filter.test(filePath)))
         .forEach(filePath => {
-            console.log(filePath);
             const sourceFilePath = path.join(source, filePath);
             const destFilePath = path.join(dest, filePath);
 

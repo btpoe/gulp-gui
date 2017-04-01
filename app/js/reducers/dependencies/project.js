@@ -7,6 +7,7 @@ module.exports = function({
         'github:gulpjs/gulp#4.0',
         'gulp-clone',
         'gulp-if',
+        'gulp-intelli-watch',
         'gulp-notify',
         'gulp-rename',
         'gulp-sourcemaps',

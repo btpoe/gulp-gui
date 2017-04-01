@@ -22,6 +22,10 @@ module.exports = function({
                     'vinyl-source-stream'
                 );
 
+                if (Array.isArray(engineSettings.externalLibraries) && engineSettings.externalLibraries.length) {
+                    deps.push('browserify-global-shim');
+                }
+
                 switch (transpiler) {
                     case 'babel':
                     case 'buble':

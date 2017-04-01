@@ -46,6 +46,7 @@ module.exports = function (gulpSrc) {
             if (!endpointConfigs[file.path]) {
                 endpointConfigs[file.path] = {
                     entry: file.path,
+                    dest: file.path,
                     sourceMap: true,
                     format: 'iife',
                     plugins,
