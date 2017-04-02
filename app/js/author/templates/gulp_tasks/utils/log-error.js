@@ -14,5 +14,7 @@ module.exports = (err) => {
     }
 
     console.log(message.join('\n'));
-    this.emit('end');
+    if (typeof this.emit === 'function') {
+        this.emit('end');
+    }
 };

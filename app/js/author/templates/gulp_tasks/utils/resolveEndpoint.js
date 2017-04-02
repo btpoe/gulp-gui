@@ -1,12 +1,12 @@
-const { resolve, join} = require('path');
+const { resolve } = require('path');
 const config = require('../config');
 
 module.exports = function resolveEndpoint(type, task, endpoint = '') {
-    if (typeof endpoint === 'object') {
-        return resolveEndpoint(type, task, endpoint[type]);
-    }
     if (Array.isArray(endpoint)) {
         return endpoint.map(resolveEndpoint.bind(null, type, task));
+    }
+    if (typeof endpoint === 'object') {
+        return resolveEndpoint(type, task, endpoint[type]);
     }
 
     let ignored = false;
@@ -14,6 +14,6 @@ module.exports = function resolveEndpoint(type, task, endpoint = '') {
         endpoint = endpoint.substr(1);
         ignored = true;
     }
-    const relativePath = resolve(config.project[type], config[task][type], endpoint);
-    return (ignored ? '!' : '') + join('.', relativePath);
+    const absolutePath = resolve(config.project[type], config[task][type], endpoint);
+    return (ignored ? '!' : '') + absolutePath.replace(process.cwd() + '/', '');
 };

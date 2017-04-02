@@ -13,12 +13,10 @@ const api = {
 };
 
 let runningProcess;
-let queuedProcess;
 
 module.exports = function manageDependencies(manager = 'npm', depsToAdd, depsToRemove) {
     if (runningProcess) {
-        queuedProcess = [manager, depsToAdd, depsToRemove];
-        return;
+        runningProcess.kill('SIGINT')
     }
 
     const commands = [];
@@ -36,10 +34,6 @@ module.exports = function manageDependencies(manager = 'npm', depsToAdd, depsToR
             cwd: app.projectDirectory
         }, data => data).on('exit', () => {
             runningProcess = null;
-            if (queuedProcess) {
-                manageDependencies.apply(null, queuedProcess);
-                queuedProcess = null
-            }
         });
     }
 };

@@ -21,8 +21,6 @@ const globals = engineSettings.externalLibraries.reduce((g, lib) => {
 
 function pluginConfig(name) {
     switch (name) {
-        case 'node-resolve':
-            return { skip: external };
         case transpiler:
             return transpilerSettings;
         default:

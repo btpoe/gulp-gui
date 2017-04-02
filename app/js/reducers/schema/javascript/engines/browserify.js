@@ -3,25 +3,30 @@ module.exports = {
         title: 'Browserify Settings',
         type: 'object',
         properties: {
-            presets: {
-                title: 'Plugins',
+            externalLibraries: {
+                title: 'External Libraries',
                 type: 'array',
                 items: {
-                    type: 'string',
-                    enum: [
-                        'shim',
-                    ],
-                    enumNames: [
-                        'Shim',
-                    ],
+                    type: 'object',
+                    properties: {
+                        name: { title: 'Package Name', type: 'string' },
+                        global: { title: 'Global Variable', type: 'string' },
+                    },
                 },
-                uniqueItems: true,
             },
         },
     },
     ui: {
         presets: {
             'ui:widget': 'checkboxes',
+        },
+        externalLibraries: {
+            'ui:options':  {
+                orderable: false,
+            },
+            items: {
+                'ui:field': 'externalLib',
+            },
         },
     },
 };

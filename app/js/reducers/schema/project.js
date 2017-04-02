@@ -2,7 +2,7 @@ module.exports = formData => ({
     schema: {
         title: 'Project',
         type: 'object',
-        required: ['title'],
+        required: ['name'],
         properties: {
             name: { title: 'Project Name', type: 'string' },
             src: { title: 'Source Directory', type: 'string' },
