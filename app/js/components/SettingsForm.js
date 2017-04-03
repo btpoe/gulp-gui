@@ -15,10 +15,15 @@ const schema = {
                 app.userConfig = window.store.getState().formData;
             }
         },
-        nodePath: {
-            title: 'Node Path',
+        nodeBinary: {
+            title: 'Node Binary',
             type: 'string',
             default: '/usr/local/bin/node'
+        },
+        packageManagerBinary: {
+            title: 'Package Manager Binary',
+            type: 'string',
+            default: '/usr/local/bin/npm'
         }
     }
 };

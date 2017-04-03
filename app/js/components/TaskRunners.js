@@ -52,7 +52,7 @@ module.exports = class extends Component {
 
                 const buildType = watch ? 'watching' : 'building';
 
-                const taskProcess = cp.exec(`${app.nodePath} node_modules/.bin/gulp ${command.join(':')}`, {
+                const taskProcess = cp.exec(`${app.nodeBinary} node_modules/.bin/gulp ${command.join(':')}`, {
                     cwd: app.projectDirectory,
                 }).on('exit', () => {
                     const state = Object.assign({}, this.state[buildType], {

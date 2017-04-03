@@ -19,7 +19,7 @@ module.exports = function manageDependencies(manager = 'npm', depsToAdd, depsToR
         runningProcess.kill('SIGINT')
     }
 
-    const packageManagerBinary = `${app.packageManagerGlobalPath.replace(/\/?(yarn|npm)$/, '')}/${manager}`;
+    const packageManagerBinary = `${app.packageManagerBinary.replace(/\/?(yarn|npm)$/, '')}/${manager}`;
 
     const commands = [];
 

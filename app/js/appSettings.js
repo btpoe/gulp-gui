@@ -2,8 +2,8 @@ const fs = require('fs');
 const path = require('path');
 
 const USER_CONFIG = 'defaultConfig';
-const NODE_PATH = 'userNodePath';
-const PACKAGE_MANAGER_GLOBAL_PATH = 'packageManagerGlobalPath';
+const NODE_BINARY = 'nodeBinary';
+const PACKAGE_MANAGER_BINARY = 'packageManagerBinary';
 const PROJECT_DIRECTORY = 'projectRootDirectory';
 const DEFAULT_CONFIG_PATH = path.join(__dirname, './author/templates/gulp_tasks/config.json');
 
@@ -63,16 +63,16 @@ const appSettings = {
     // User Preferences
     get userPreferences() {
         return {
-            nodePath: this.nodePath,
-            packageManagerGlobalPath: this.packageManagerGlobalPath,
+            nodeBinary: this.nodeBinary,
+            packageManagerBinary: this.packageManagerBinary,
         };
     },
     set userPreferences(value) {
-        if (value.nodePath) {
-            this.nodePath = value.nodePath;
+        if (value.nodeBinary) {
+            this.nodeBinary = value.nodeBinary;
         }
-        if (value.packageManagerGlobalPath) {
-            this.packageManagerGlobalPath = value.packageManagerGlobalPath;
+        if (value.packageManagerBinary) {
+            this.packageManagerBinary = value.packageManagerBinary;
         }
     },
     get userConfig() {
@@ -81,17 +81,17 @@ const appSettings = {
     set userConfig(config) {
         window.localStorage.setItem(USER_CONFIG, JSON.stringify(config, null, '  '));
     },
-    get nodePath() {
-        return window.localStorage.getItem(NODE_PATH) || '/usr/local/bin/node';
+    get nodeBinary() {
+        return window.localStorage.getItem(NODE_BINARY) || '/usr/local/bin/node';
     },
-    set nodePath(value) {
-        window.localStorage.setItem(NODE_PATH, value);
+    set nodeBinary(value) {
+        window.localStorage.setItem(NODE_BINARY, value);
     },
-    get packageManagerGlobalPath() {
-        return window.localStorage.getItem(PACKAGE_MANAGER_GLOBAL_PATH) || '/usr/local/bin/npm';
+    get packageManagerBinary() {
+        return window.localStorage.getItem(PACKAGE_MANAGER_BINARY) || '/usr/local/bin/npm';
     },
-    set packageManagerGlobalPath(value) {
-        window.localStorage.setItem(PACKAGE_MANAGER_GLOBAL_PATH, value);
+    set packageManagerBinary(value) {
+        window.localStorage.setItem(PACKAGE_MANAGER_BINARY, value);
     },
 };
 
