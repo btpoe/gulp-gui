@@ -19,14 +19,16 @@ module.exports = function manageDependencies(manager = 'npm', depsToAdd, depsToR
         runningProcess.kill('SIGINT')
     }
 
+    const packageManagerBinary = `${app.packageManagerGlobalPath.replace(/\/?(yarn|npm)$/, '')}/${manager}`;
+
     const commands = [];
 
     if (depsToAdd.length) {
-        commands.push(`${app.nodePath} node_modules/.bin/${manager} ${api[manager].install} ${depsToAdd.join(' ')} -D`);
+        commands.push(`${packageManagerBinary} ${api[manager].install} ${depsToAdd.join(' ')} -D`);
     }
 
     if (depsToRemove.length) {
-        commands.push(`${app.nodePath} node_modules/.bin/${manager} ${api[manager].uninstall} ${depsToRemove.join(' ')} -D`);
+        commands.push(`${packageManagerBinary} ${api[manager].uninstall} ${depsToRemove.join(' ')} -D`);
     }
 
     if (commands.length) {

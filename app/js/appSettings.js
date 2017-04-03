@@ -3,6 +3,7 @@ const path = require('path');
 
 const USER_CONFIG = 'defaultConfig';
 const NODE_PATH = 'userNodePath';
+const PACKAGE_MANAGER_GLOBAL_PATH = 'packageManagerGlobalPath';
 const PROJECT_DIRECTORY = 'projectRootDirectory';
 const DEFAULT_CONFIG_PATH = path.join(__dirname, './author/templates/gulp_tasks/config.json');
 
@@ -63,15 +64,19 @@ const appSettings = {
     get userPreferences() {
         return {
             nodePath: this.nodePath,
+            packageManagerGlobalPath: this.packageManagerGlobalPath,
         };
     },
     set userPreferences(value) {
         if (value.nodePath) {
             this.nodePath = value.nodePath;
         }
+        if (value.packageManagerGlobalPath) {
+            this.packageManagerGlobalPath = value.packageManagerGlobalPath;
+        }
     },
     get userConfig() {
-        return window.localStorage.getItem(USER_CONFIG);
+        return JSON.parse(window.localStorage.getItem(USER_CONFIG));
     },
     set userConfig(config) {
         window.localStorage.setItem(USER_CONFIG, JSON.stringify(config, null, '  '));
@@ -81,6 +86,12 @@ const appSettings = {
     },
     set nodePath(value) {
         window.localStorage.setItem(NODE_PATH, value);
+    },
+    get packageManagerGlobalPath() {
+        return window.localStorage.getItem(PACKAGE_MANAGER_GLOBAL_PATH) || '/usr/local/bin/npm';
+    },
+    set packageManagerGlobalPath(value) {
+        window.localStorage.setItem(PACKAGE_MANAGER_GLOBAL_PATH, value);
     },
 };
 
