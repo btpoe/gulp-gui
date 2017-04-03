@@ -54,9 +54,7 @@ module.exports = class extends Component {
 
                 const taskProcess = cp.exec(`${app.nodePath} node_modules/.bin/gulp ${command.join(':')}`, {
                     cwd: app.projectDirectory,
-                }).on('exit', (code) => {
-                    console.log('child process exited with code ' + code.toString());
-
+                }).on('exit', () => {
                     const state = Object.assign({}, this.state[buildType], {
                         [taskName]: null
                     });
