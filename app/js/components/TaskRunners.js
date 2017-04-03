@@ -42,19 +42,17 @@ module.exports = class extends Component {
             if (watch && this.state.watching[taskName]) {
                 this.state.watching[taskName].kill('SIGINT');
             } else {
-                let command = `${app.nodePath} node_modules/.bin/${app.gulpConfig.project.packageManager} run build`;
+                const command = [];
                 if (task) {
-                    command += ` -- ${task}`;
-                    if (watch) {
-                        command += ':watch';
-                    }
-                } else if (watch) {
-                    command += ' -- watch';
+                    command.push(task);
+                }
+                if (watch) {
+                    command.push('watch');
                 }
 
                 const buildType = watch ? 'watching' : 'building';
 
-                const taskProcess = cp.spawn(command, {
+                const taskProcess = cp.exec(`${app.nodePath} node_modules/.bin/gulp ${command.join(':')}`, {
                     cwd: app.projectDirectory,
                 }).on('exit', (code) => {
                     console.log('child process exited with code ' + code.toString());
@@ -63,14 +61,6 @@ module.exports = class extends Component {
                         [taskName]: null
                     });
                     this.setState({ [buildType]: state });
-                });
-
-                taskProcess.stdout.on('data', function (data) {
-                    console.log('stdout: ' + data.toString());
-                });
-
-                taskProcess.stderr.on('data', function (data) {
-                    console.log('stderr: ' + data.toString());
                 });
 
                 const state = Object.assign({}, this.state[buildType], {
