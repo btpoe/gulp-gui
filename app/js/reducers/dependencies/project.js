@@ -1,7 +1,9 @@
 module.exports = function({
+    packageManager = 'npm',
     devDependencies = []
 }) {
     return devDependencies.concat([
+        packageManager,
         'dotenv',
         'event-stream',
         'github:gulpjs/gulp#4.0',

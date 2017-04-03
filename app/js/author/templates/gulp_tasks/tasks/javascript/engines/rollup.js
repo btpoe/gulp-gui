@@ -13,6 +13,10 @@ const {
     }
 } = require('../../../config').javascript;
 
+if (!Array.isArray(engineSettings.plugins)) {
+    engineSettings.plugins = [];
+}
+
 const external = engineSettings.externalLibraries.map(lib => lib.name);
 const globals = engineSettings.externalLibraries.reduce((g, lib) => {
      g[lib.name] = lib.global;

@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const USER_CONFIG = 'defaultConfig';
+const NODE_PATH = 'userNodePath';
 const PROJECT_DIRECTORY = 'projectRootDirectory';
 const DEFAULT_CONFIG_PATH = path.join(__dirname, './author/templates/gulp_tasks/config.json');
 
@@ -59,11 +60,27 @@ const appSettings = {
     },
 
     // User Preferences
+    get userPreferences() {
+        return {
+            nodePath: this.nodePath,
+        };
+    },
+    set userPreferences(value) {
+        if (value.nodePath) {
+            this.nodePath = value.nodePath;
+        }
+    },
     get userConfig() {
-        window.localStorage.getItem(USER_CONFIG);
+        return window.localStorage.getItem(USER_CONFIG);
     },
     set userConfig(config) {
         window.localStorage.setItem(USER_CONFIG, JSON.stringify(config, null, '  '));
+    },
+    get nodePath() {
+        return window.localStorage.getItem(NODE_PATH) || '/usr/local/bin/node';
+    },
+    set nodePath(value) {
+        window.localStorage.setItem(NODE_PATH, value);
     },
 };
 

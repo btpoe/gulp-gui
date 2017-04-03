@@ -6,6 +6,7 @@ function update(key, data) {
         type: UPDATE, key, data
     };
 }
+
 function load(data) {
     return {
         type: LOAD, data

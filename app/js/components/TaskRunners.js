@@ -1,4 +1,4 @@
-const { exec } = require('child_process');
+const cp = require('child_process');
 const { Component, createElement } = require('react');
 const _  = require('lodash');
 const app = require('../appSettings');
@@ -42,7 +42,7 @@ module.exports = class extends Component {
             if (watch && this.state.watching[taskName]) {
                 this.state.watching[taskName].kill('SIGINT');
             } else {
-                let command = 'npm run build';
+                let command = `${app.nodePath} node_modules/.bin/${app.gulpConfig.project.packageManager} run build`;
                 if (task) {
                     command += ` -- ${task}`;
                     if (watch) {
@@ -54,13 +54,23 @@ module.exports = class extends Component {
 
                 const buildType = watch ? 'watching' : 'building';
 
-                const taskProcess = exec(command, {
+                const taskProcess = cp.spawn(command, {
                     cwd: app.projectDirectory,
-                }).on('exit', () => {
+                }).on('exit', (code) => {
+                    console.log('child process exited with code ' + code.toString());
+
                     const state = Object.assign({}, this.state[buildType], {
                         [taskName]: null
                     });
                     this.setState({ [buildType]: state });
+                });
+
+                taskProcess.stdout.on('data', function (data) {
+                    console.log('stdout: ' + data.toString());
+                });
+
+                taskProcess.stderr.on('data', function (data) {
+                    console.log('stderr: ' + data.toString());
                 });
 
                 const state = Object.assign({}, this.state[buildType], {

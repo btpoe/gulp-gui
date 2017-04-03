@@ -1,4 +1,4 @@
-const { exec } = require('child_process');
+const cp = require('child_process');
 const app = require('../appSettings');
 
 const api = {
@@ -22,15 +22,15 @@ module.exports = function manageDependencies(manager = 'npm', depsToAdd, depsToR
     const commands = [];
 
     if (depsToAdd.length) {
-        commands.push(`${manager} ${api[manager].install} ${depsToAdd.join(' ')} -D`);
+        commands.push(`${app.nodePath} node_modules/.bin/${manager} ${api[manager].install} ${depsToAdd.join(' ')} -D`);
     }
 
     if (depsToRemove.length) {
-        commands.push(`${manager} ${api[manager].uninstall} ${depsToRemove.join(' ')} -D`);
+        commands.push(`${app.nodePath} node_modules/.bin/${manager} ${api[manager].uninstall} ${depsToRemove.join(' ')} -D`);
     }
 
     if (commands.length) {
-        runningProcess = exec(commands.join(' && '), {
+        runningProcess = cp.exec(commands.join(' && '), {
             cwd: app.projectDirectory
         }, data => data).on('exit', () => {
             runningProcess = null;
