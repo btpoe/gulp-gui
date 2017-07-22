@@ -1,18 +1,18 @@
 const { app, BrowserWindow, Menu, dialog } = require('electron');
-const devtools = require('electron-devtools-installer');
 const menuTemplate = require('./menu-template');
-const installExtension = devtools.default;
-const { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = devtools;
-
 const menu = Menu.buildFromTemplate(menuTemplate);
 
-installExtension(REACT_DEVELOPER_TOOLS, true)
-    .then((name) => console.log(`Added Extension:  ${name}`))
-    .catch((err) => console.log('An error occurred: ', err));
+try {
+    const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
 
-installExtension(REDUX_DEVTOOLS, true)
-    .then((name) => console.log(`Added Extension:  ${name}`))
-    .catch((err) => console.log('An error occurred: ', err));
+    installExtension(REACT_DEVELOPER_TOOLS, true)
+        .then((name) => console.log(`Added Extension:  ${name}`))
+        .catch((err) => console.log('An error occurred: ', err));
+
+    installExtension(REDUX_DEVTOOLS, true)
+        .then((name) => console.log(`Added Extension:  ${name}`))
+        .catch((err) => console.log('An error occurred: ', err));
+} catch (e) {}
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
