@@ -96,6 +96,15 @@ header {
     margin-left: 6%
 }
 
+.view--console {
+    background: #333;
+    color: #f1f1f1;
+    margin-right: var(--padding);
+    min-height: 100%;
+    padding: var(--padding);
+    white-space: pre;
+}
+
 @media (min-width: 48em) {
     .array-row {
         display: flex;

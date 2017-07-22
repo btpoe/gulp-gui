@@ -7,6 +7,7 @@ module.exports = function({
         'dotenv',
         'event-stream',
         'github:gulpjs/gulp#4.0',
+        'gulp-cli',
         'gulp-clone',
         'gulp-if',
         'gulp-intelli-watch',

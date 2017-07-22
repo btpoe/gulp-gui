@@ -18,7 +18,7 @@ electron app
 ## Roadmap
 
 ### Phase 1
-- Add console output.
+- ~~Add console output.~~
 - Test icons and images.
 - Add .svg to icon globs.
 - Add image extensions to images globs.

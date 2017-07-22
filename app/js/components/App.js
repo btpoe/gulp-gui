@@ -2,6 +2,7 @@ const { Component, createElement } = require('react');
 const { connect } = require('react-redux');
 const Nav = require('./Navigation');
 const ConfigForm = require('./ConfigForm');
+const ConsoleView = require('./ConsoleView');
 const SettingsForm = require('./SettingsForm');
 const TaskRunners = require('./TaskRunners');
 
@@ -17,31 +18,36 @@ class App extends Component {
         super(props);
 
         this.state = {
-            activePanel: 'project'
+            activePanel: 'project',
         };
 
         this.setActivePanel = e => {
             this.setState({ activePanel: e.target.dataset.key });
+        };
+    }
+
+    get mainPanel() {
+        const activePanel = this.state.activePanel;
+
+        switch(activePanel) {
+            case 'appSettings':
+                return createElement(SettingsForm);
+            case 'console':
+                return createElement(ConsoleView);
+            default:
+                const schema = this.props.schema[activePanel];
+                const formData = this.props.formData[activePanel];
+                return createElement(ConfigForm, { schema, formData, activePanel });
         }
     }
 
     render() {
-        const { activePanel } = this.state;
-        let mainPanel;
-
-
-        if (activePanel === 'appSettings') {
-            mainPanel = createElement(SettingsForm);
-        } else {
-            const schema = this.props.schema[activePanel];
-            const formData = this.props.formData[activePanel];
-            mainPanel = createElement(ConfigForm, { schema, formData, activePanel });
-        }
+        const activePanel = this.state.activePanel;
 
         return createElement('div', { className: 'react-root row' },
-            createElement(TaskRunners, { formData: this.props.formData }),
-            createElement(Nav, { setActivePanel: this.setActivePanel, activePanel }),
-            mainPanel
+            createElement(TaskRunners, { formData: this.props.formData, activePanel, setActivePanel: this.setActivePanel }),
+            createElement(Nav, { activePanel, setActivePanel: this.setActivePanel }),
+            this.mainPanel
         );
     }
 }

@@ -2,6 +2,7 @@ const cp = require('child_process');
 const { Component, createElement } = require('react');
 const _  = require('lodash');
 const app = require('../appSettings');
+const consoleService = require('../services/console');
 
 const clickInMenu = Symbol('click in modal');
 
@@ -52,14 +53,17 @@ module.exports = class extends Component {
 
                 const buildType = watch ? 'watching' : 'building';
 
-                const taskProcess = cp.exec(`${app.nodeBinary} node_modules/.bin/gulp ${command.join(':')}`, {
+                const taskProcess = cp.spawn(app.nodeBinary, ['node_modules/gulp-cli/bin/gulp', command.join(':'), '--color=always'], {
                     cwd: app.projectDirectory,
-                }).on('exit', () => {
+                }).on('exit', (e) => {
                     const state = Object.assign({}, this.state[buildType], {
                         [taskName]: null
                     });
                     this.setState({ [buildType]: state });
                 });
+
+                taskProcess.stdout.pipe(consoleService.stream);
+                taskProcess.stderr.pipe(consoleService.stream);
 
                 const state = Object.assign({}, this.state[buildType], {
                     [taskName]: taskProcess
@@ -89,8 +93,14 @@ module.exports = class extends Component {
 
         return createElement('div', { className: 'task-runners' },
             createElement('div', { className: 'btn-group' },
-                createElement('button', { type: 'button', className: `btn btn-${this.state.building.all ? 'warning' : 'info'} btn-sm`, onClick: this.buildAll }, 'Build'),
-                createElement('button', { type: 'button', className: 'btn btn-info btn-sm dropdown-toggle', onClick: toggleMenu },
+                createElement('button', { type: 'button', className: `btn btn-sm btn-${this.props.activePanel === 'console' ? 'warning' : 'info'}`, onClick: this.props.setActivePanel, 'data-key': 'console' },
+                    createElement('span', { className: 'glyphicon glyphicon-console', 'aria-hidden': true }),
+                    ' Console'
+                )
+            ),
+            createElement('div', { className: 'btn-group' },
+                createElement('button', { type: 'button', className: `btn btn-sm btn-${this.state.building.all ? 'warning' : 'info'}`, onClick: this.buildAll }, 'Build'),
+                createElement('button', { type: 'button', className: 'btn btn-sm btn-info dropdown-toggle', onClick: toggleMenu },
                     createElement('span', { className: 'caret' }),
                     createElement('span', { className: 'sr-only' }, 'Toggle Dropdown')
                 ),
@@ -103,8 +113,8 @@ module.exports = class extends Component {
                 )
             ),
             createElement('div', { className: 'btn-group' },
-                createElement('button', { type: 'button', className: `btn btn-${this.state.watching.all ? 'warning' : 'info'} btn-sm`, onClick: this.watchAll }, 'Watch'),
-                createElement('button', { type: 'button', className: 'btn btn-info btn-sm dropdown-toggle', onClick: toggleMenu },
+                createElement('button', { type: 'button', className: `btn btn-sm btn-${this.state.watching.all ? 'warning' : 'info'}`, onClick: this.watchAll }, 'Watch'),
+                createElement('button', { type: 'button', className: 'btn btn-sm btn-info dropdown-toggle', onClick: toggleMenu },
                     createElement('span', { className: 'caret' }),
                     createElement('span', { className: 'sr-only' }, 'Toggle Dropdown')
                 ),
