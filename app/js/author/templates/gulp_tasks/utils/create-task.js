@@ -7,7 +7,7 @@ const intelliWatch = require('gulp-intelli-watch');
 const notify = require('gulp-notify');
 const rename = require('gulp-rename');
 const logError = require('./log-error');
-const notificationFor = require('./notification-for');
+const fileList = require('./notification-for');
 const resolveEndpoint = require('./resolveEndpoint');
 const config = require('../config');
 
@@ -37,7 +37,7 @@ module.exports = ({
     const {
         endpoints = [
             {
-                src: ['/**'],
+                src: ['./**'],
                 dest: [
                     {
                         location: '.',
@@ -86,7 +86,12 @@ module.exports = ({
 
             const buildOutput = buildProcess(gulpSrc);
             return merge(endpoint.dest.map(toDestination.bind(null, buildOutput)))
-                .pipe(notify(notificationFor(taskName)));
+                .pipe(fileList())
+                .pipe(notify({
+                    title: `${config.project.name} :: ${taskName} compiled`,
+                    message: `<%= file.contents.toString() %>`,
+                    icon: config.project.icon,
+                }));
         }
 
         const watcher = intelliWatch(allSources, taskLogic);

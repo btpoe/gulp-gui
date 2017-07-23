@@ -1,8 +1,24 @@
-const config = require('../config').project;
+const path = require('path');
+const through = require('through2');
 
-module.exports = taskName => ({
-    title: config.name,
-    message: `${taskName} compiled`,
-    icon: config.icon,
-    onLast: true,
-});
+module.exports = () => {
+    const fileList = [];
+    let lastFile = null;
+
+    return through.obj((file, enc, cb) => {
+        if (file.isNull()) {
+            cb(null, file);
+            return;
+        }
+
+        lastFile = file;
+        fileList.push(path.relative(process.cwd(), file.path));
+        cb();
+    }, function (cb) {
+        this.push({
+            path: 'file-list.txt',
+            contents: new Buffer(fileList.join('\n')),
+        });
+        cb();
+    });
+};
