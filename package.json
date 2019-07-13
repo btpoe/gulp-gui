@@ -30,7 +30,7 @@
     "gulp-svgstore": "^6.1.0",
     "gulp-uglify": "^2.0.1",
     "gulp-util": "^3.0.8",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.13",
     "node-sass": "^3.11.2",
     "node-sass-import": "^1.1.1",
     "node-watch": "^0.4.1",
